@@ -1,0 +1,827 @@
+[
+  {
+    "id": 0,
+    "tag": "button",
+    "text": "",
+    "type": "button",
+    "bbox": {
+      "x": 24,
+      "y": 16,
+      "w": 24,
+      "h": 24
+    },
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button",
+    "is_visible": true
+  },
+  {
+    "id": 1,
+    "tag": "button",
+    "text": "Skip navigation",
+    "type": "button",
+    "bbox": {
+      "x": 16,
+      "y": -1000,
+      "w": 128,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--enable-backdrop-filter-experiment",
+    "is_visible": true
+  },
+  {
+    "id": 2,
+    "tag": "button",
+    "text": "",
+    "type": "button",
+    "bbox": {
+      "x": 1170,
+      "y": 8,
+      "w": 64,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "ytSearchboxComponentSearchButton",
+    "is_visible": true
+  },
+  {
+    "id": 3,
+    "tag": "button",
+    "text": "",
+    "type": "button",
+    "bbox": {
+      "x": 1250,
+      "y": 8,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-only-default yt-spec-button-shape-next--enable-backdrop-filter-experiment",
+    "is_visible": true
+  },
+  {
+    "id": 4,
+    "tag": "button",
+    "text": "",
+    "type": "button",
+    "bbox": {
+      "x": 1751,
+      "y": 16,
+      "w": 24,
+      "h": 24
+    },
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button",
+    "is_visible": true
+  },
+  {
+    "id": 5,
+    "tag": "a",
+    "text": "",
+    "type": "link",
+    "bbox": {
+      "x": 56,
+      "y": 0,
+      "w": 123,
+      "h": 56
+    },
+    "html_id": "logo",
+    "html_classes": "yt-simple-endpoint style-scope ytd-topbar-logo-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 6,
+    "tag": "a",
+    "text": "",
+    "type": "link",
+    "bbox": {
+      "x": 1743,
+      "y": 8,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "yt-simple-endpoint style-scope ytd-topbar-menu-button-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 7,
+    "tag": "a",
+    "text": "Sign in",
+    "type": "link",
+    "bbox": {
+      "x": 1791,
+      "y": 10,
+      "w": 98,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--outline yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment",
+    "is_visible": true
+  },
+  {
+    "id": 8,
+    "tag": "a",
+    "text": "Home",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 68,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 9,
+    "tag": "a",
+    "text": "Shorts",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 108,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 10,
+    "tag": "a",
+    "text": "Subscriptions",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 148,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 11,
+    "tag": "a",
+    "text": "You",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 188,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 12,
+    "tag": "a",
+    "text": "History",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 228,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 13,
+    "tag": "a",
+    "text": "Sign in",
+    "type": "link",
+    "bbox": {
+      "x": 32,
+      "y": 349,
+      "w": 98,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--outline yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment",
+    "is_visible": true
+  },
+  {
+    "id": 14,
+    "tag": "a",
+    "text": "Shopping",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 446,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 15,
+    "tag": "a",
+    "text": "Music",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 486,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 16,
+    "tag": "a",
+    "text": "Movies",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 526,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 17,
+    "tag": "a",
+    "text": "Show more",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 18,
+    "tag": "a",
+    "text": "YouTube Premium",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 662,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 19,
+    "tag": "a",
+    "text": "YouTube Music",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 702,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 20,
+    "tag": "a",
+    "text": "YouTube Kids",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 742,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 21,
+    "tag": "a",
+    "text": "Settings",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 807,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 22,
+    "tag": "a",
+    "text": "Report history",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 847,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 23,
+    "tag": "a",
+    "text": "Help",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 887,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 24,
+    "tag": "a",
+    "text": "Send feedback",
+    "type": "link",
+    "bbox": {
+      "x": 12,
+      "y": 927,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 25,
+    "tag": "a",
+    "text": "About",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 996,
+      "w": 35,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 26,
+    "tag": "a",
+    "text": "Press",
+    "type": "link",
+    "bbox": {
+      "x": 67,
+      "y": 996,
+      "w": 33,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 27,
+    "tag": "a",
+    "text": "Copyright",
+    "type": "link",
+    "bbox": {
+      "x": 108,
+      "y": 996,
+      "w": 56,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 28,
+    "tag": "a",
+    "text": "Contact us",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 1014,
+      "w": 63,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 29,
+    "tag": "a",
+    "text": "Creators",
+    "type": "link",
+    "bbox": {
+      "x": 95,
+      "y": 1014,
+      "w": 50,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 30,
+    "tag": "a",
+    "text": "Advertise",
+    "type": "link",
+    "bbox": {
+      "x": 152,
+      "y": 1014,
+      "w": 55,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 31,
+    "tag": "a",
+    "text": "Developers",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 1032,
+      "w": 65,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 32,
+    "tag": "a",
+    "text": "Terms",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 1062,
+      "w": 37,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 33,
+    "tag": "a",
+    "text": "Privacy",
+    "type": "link",
+    "bbox": {
+      "x": 69,
+      "y": 1062,
+      "w": 43,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 34,
+    "tag": "a",
+    "text": "Policy & Safety",
+    "type": "link",
+    "bbox": {
+      "x": 120,
+      "y": 1062,
+      "w": 87,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 35,
+    "tag": "a",
+    "text": "How YouTube works",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 1080,
+      "w": 119,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 36,
+    "tag": "a",
+    "text": "Test new features",
+    "type": "link",
+    "bbox": {
+      "x": 24,
+      "y": 1098,
+      "w": 104,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "",
+    "is_visible": true
+  },
+  {
+    "id": 37,
+    "tag": "input",
+    "text": "Search",
+    "type": "text",
+    "bbox": {
+      "x": 651,
+      "y": 16,
+      "w": 515,
+      "h": 24
+    },
+    "html_id": "",
+    "html_classes": "ytSearchboxComponentInput yt-searchbox-input title",
+    "is_visible": true
+  },
+  {
+    "id": 38,
+    "tag": "ytd-guide-entry-renderer",
+    "text": "Show more",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "expander-item",
+    "html_classes": "style-scope ytd-guide-collapsible-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 39,
+    "tag": "tp-yt-paper-item",
+    "text": "Home",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 68,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 40,
+    "tag": "tp-yt-paper-item",
+    "text": "Shorts",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 108,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 41,
+    "tag": "tp-yt-paper-item",
+    "text": "Subscriptions",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 148,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 42,
+    "tag": "tp-yt-paper-item",
+    "text": "You",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 188,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 43,
+    "tag": "tp-yt-paper-item",
+    "text": "History",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 228,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 44,
+    "tag": "tp-yt-paper-item",
+    "text": "Shopping",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 446,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 45,
+    "tag": "tp-yt-paper-item",
+    "text": "Music",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 486,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 46,
+    "tag": "tp-yt-paper-item",
+    "text": "Movies",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 526,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 47,
+    "tag": "tp-yt-paper-item",
+    "text": "Show more",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 48,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Premium",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 662,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 49,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Music",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 702,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 50,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Kids",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 742,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 51,
+    "tag": "tp-yt-paper-item",
+    "text": "Settings",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 807,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 52,
+    "tag": "tp-yt-paper-item",
+    "text": "Report history",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 847,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 53,
+    "tag": "tp-yt-paper-item",
+    "text": "Help",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 887,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  },
+  {
+    "id": 54,
+    "tag": "tp-yt-paper-item",
+    "text": "Send feedback",
+    "type": "button",
+    "bbox": {
+      "x": 12,
+      "y": 927,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer",
+    "is_visible": true
+  }
+]
