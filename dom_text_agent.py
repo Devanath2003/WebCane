@@ -73,7 +73,7 @@ class DOMTextAgent:
                 stream=False,
                 options={
                     'temperature': 0.1,  # Low temperature for consistency
-                    'num_predict': 50,   # Short response expected
+                    'num_predict': 150,   # Short response expected
                 }
             )
             
@@ -124,56 +124,48 @@ URL: {page_info.get('url', 'Unknown')}
 
 TASK: {task}
 
-INTERACTIVE ELEMENTS (by text/id/class/position):
+INTERACTIVE ELEMENTS:
 {chr(10).join(element_lines)}
 
-Which element ID best matches the task?
+Which element ID best matches the task? 
 
-RULES:
-- Match by text content, HTML id/class names, or likely function
-- If an element has no text, look at its id or class name for clues (e.g., 'ytSearchbox' suggests search)
-- Return ONLY the number (e.g., "1")
-- If no match, return "NONE"
+Follow this format exactly:
+REASONING: (Briefly explain why this element is the best match based on text, class names, or position)
+ID: (The number only)
 
-Your answer (number only):"""
+If no match exists, return:
+REASONING: No elements match this description
+ID: NONE"""
         
         return prompt
     
     def _parse_response(self, response: str, elements: List[Dict]) -> int:
         """
-        Parse LLM response to extract element ID
-        
-        Args:
-            response: Raw LLM response
-            elements: List of elements for validation
-            
-        Returns:
-            Element ID or -1 if invalid/none
+        Parses the new Reasoning/ID format
         """
         try:
-            # Check for explicit "NONE" response
-            if 'NONE' in response.upper():
-                return -1
+            print(f"🧠 LLM Thoughts: {response}") # See the reasoning in your console
             
-            # Extract first number from response
-            numbers = re.findall(r'\b\d+\b', response)
+            # Use regex to find the number following 'ID:'
+            match = re.search(r'ID:\s*(\d+|NONE)', response, re.IGNORECASE)
             
-            if not numbers:
-                print("⚠️  No number found in LLM response")
-                return -1
-            
-            # Get first number
-            element_id = int(numbers[0])
-            
+            if not match:
+                # Fallback: just look for any number if the format is messy
+                numbers = re.findall(r'\b\d+\b', response)
+                if not numbers: return -1
+                element_id = int(numbers[-1]) # Take the last number (usually the ID)
+            else:
+                id_str = match.group(1).upper()
+                if id_str == 'NONE': return -1
+                element_id = int(id_str)
+
             # Validate range
             if 0 <= element_id < len(elements):
                 return element_id
-            else:
-                print(f"⚠️  Element ID {element_id} out of range (0-{len(elements)-1})")
-                return -1
+            return -1
                 
         except Exception as e:
-            print(f"⚠️  Failed to parse response: {e}")
+            print(f"⚠️ Parsing error: {e}")
             return -1
     
     def explain_selection(self, element: Dict) -> str:
