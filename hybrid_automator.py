@@ -217,38 +217,50 @@ class HybridAutomator:
             # Analyze with vision
             print("\n🤖 Analyzing with Vision LLM...")
             system2_start = time.time()
-            element_id = self.vision_agent.find_element_by_vision(
+            
+            # NEW WAY: Vision returns the BOX NUMBER (Index 0, 1, 2...)
+            vision_index = self.vision_agent.find_element_by_vision(
                 annotated_path,
                 filtered_elements,
                 task
             )
             system2_time = time.time() - system2_start
             
-            if element_id >= 0:
-                # Find element in original list
-                element = next((el for el in elements if el['id'] == element_id), filtered_elements[element_id])
+            # Check if the index is valid (within the range of our filtered list)
+            if vision_index >= 0 and vision_index < len(filtered_elements):
+                
+                # 1. Get the actual element object from the filtered list using the index
+                target_element = filtered_elements[vision_index]
+                
+                # 2. Extract the REAL unique ID (e.g., 42, 105) from that element
+                real_id = target_element['id']
                 
                 print(f"\n✅ SYSTEM 2 SUCCESS! (🐌 {system2_time:.2f}s)")
-                print(f"   Found: [{element_id}] {element['tag']} \"{element['text'][:40]}\"")
+                print(f"   Visual Selection: Box #{vision_index}")
+                print(f"   Mapped to Real ID: {real_id}")
+                print(f"   Tag: {target_element['tag']} Text: \"{target_element['text'][:40]}\"")
                 
-                # Click the element
+                # 3. Click using the REAL ID
                 print(f"\n🖱️  Clicking element...")
-                self.extractor.click_by_id(element_id, elements)
+                click_success = self.extractor.click_by_id(real_id, elements)
                 
-                self.stats['system2_success'] += 1
-                elapsed = time.time() - start_time
-                
-                print(f"✅ Task completed in {elapsed:.2f}s (S1: {system1_time:.2f}s + S2: {system2_time:.2f}s)")
-                
-                return {
-                    'success': True,
-                    'method': 'vision',
-                    'element_id': element_id,
-                    'element': element,
-                    'time': elapsed
-                }
+                if click_success:
+                    self.stats['system2_success'] += 1
+                    elapsed = time.time() - start_time
+                    
+                    print(f"✅ Task completed in {elapsed:.2f}s (S1: {system1_time:.2f}s + S2: {system2_time:.2f}s)")
+                    
+                    return {
+                        'success': True,
+                        'method': 'vision',
+                        'element_id': real_id,
+                        'element': target_element,
+                        'time': elapsed
+                    }
+                else:
+                    print(f"❌ Click failed for ID {real_id}")
             
-            # System 2 also failed
+            # If we get here, Vision failed or returned an invalid index
             print(f"\n❌ SYSTEM 2 FAILED (took {system2_time:.2f}s)")
             
         except Exception as e:

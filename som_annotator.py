@@ -15,10 +15,10 @@ class SoMAnnotator:
         """Initialize drawing parameters and settings"""
         # Visual style parameters
         self.box_color = '#FF0000'  # Bright red
-        self.box_thickness = 4
-        self.text_color = '#FF0000'
+        self.box_thickness = 2
+        self.text_color = "#FF000014"
         self.text_bg_color = '#FFFFFF'
-        self.font_size = 28
+        self.font_size = 18
         
         # Try to load a good font, fallback to default
         self.font = self._load_font()
@@ -56,45 +56,21 @@ class SoMAnnotator:
         screenshot_bytes: bytes, 
         elements: List[Dict]
     ) -> Tuple[bytes, List[Dict]]:
-        """
-        Create annotated screenshot with numbered boxes on all elements
-        
-        Args:
-            screenshot_bytes: Raw screenshot from Playwright
-            elements: List of DOM elements from DOMExtractor
-            
-        Returns:
-            Tuple of (annotated_image_bytes, element_mapping)
-        """
-        if not screenshot_bytes:
-            print("❌ No screenshot provided")
-            return b'', []
-        
-        if not elements:
-            print("❌ No elements to annotate")
+        if not screenshot_bytes or not elements:
             return screenshot_bytes, []
         
         try:
-            # Convert bytes to PIL Image
             image = Image.open(io.BytesIO(screenshot_bytes))
-            
-            # Create drawing context
             draw = ImageDraw.Draw(image)
             
-            # Draw each element
-            annotated_count = 0
-            for element in elements:
-                self._draw_box_with_id(draw, element, self.box_color, self.font)
-                annotated_count += 1
+            # Draw each element using its INDEX in the list as the label
+            for idx, element in enumerate(elements):
+                # We pass 'str(idx)' as the label to draw
+                self._draw_box_with_id(draw, element, self.box_color, self.font, label=str(idx))
             
-            # Convert back to bytes
             output = io.BytesIO()
             image.save(output, format='PNG')
-            annotated_bytes = output.getvalue()
-            
-            print(f"✅ Annotated {annotated_count} elements")
-            
-            return annotated_bytes, elements
+            return output.getvalue(), elements
             
         except Exception as e:
             print(f"❌ Failed to annotate screenshot: {e}")
@@ -105,68 +81,26 @@ class SoMAnnotator:
         draw: ImageDraw.ImageDraw, 
         element: Dict, 
         color: str, 
-        font: ImageFont.ImageFont
+        font: ImageFont.ImageFont,
+        label: str = None  # <--- New Argument
     ):
-        """
-        Draw a numbered box around an element
-        
-        Args:
-            draw: PIL ImageDraw object
-            element: Element dict with bbox and id
-            color: Box color (hex string)
-            font: Font for text
-        """
         try:
             bbox = element['bbox']
             x, y, w, h = bbox['x'], bbox['y'], bbox['w'], bbox['h']
-            element_id = element['id']
+            
+            # Use provided label (index) or fallback to element ID
+            display_text = label if label is not None else str(element['id'])
             
             # Draw rectangle
-            draw.rectangle(
-                [(x, y), (x + w, y + h)],
-                outline=color,
-                width=self.box_thickness
-            )
+            draw.rectangle([(x, y), (x + w, y + h)], outline=color, width=self.box_thickness)
             
-            # Prepare ID text
-            id_text = str(element_id)
+            # ... (Rest of your drawing code, but use `display_text` variable) ...
             
-            # Get text size for background
-            try:
-                # For newer Pillow versions
-                text_bbox = draw.textbbox((0, 0), id_text, font=font)
-                text_width = text_bbox[2] - text_bbox[0]
-                text_height = text_bbox[3] - text_bbox[1]
-            except:
-                # Fallback for older Pillow versions
-                text_width, text_height = draw.textsize(id_text, font=font)
-            
-            # Text position (top-left corner with padding)
-            text_x = x + 5
-            text_y = y + 5
-            
-            # Draw semi-transparent white background for text
-            bg_padding = 4
-            draw.rectangle(
-                [
-                    (text_x - bg_padding, text_y - bg_padding),
-                    (text_x + text_width + bg_padding, text_y + text_height + bg_padding)
-                ],
-                fill=self.text_bg_color,
-                outline=color,
-                width=2
-            )
-            
-            # Draw ID number
-            draw.text(
-                (text_x, text_y),
-                id_text,
-                fill=color,
-                font=font
-            )
-            
+            # Example for text drawing part:
+            draw.text((x + 5, y + 5), display_text, fill=color, font=font)
+
         except Exception as e:
-            print(f"⚠️  Failed to draw element {element.get('id', '?')}: {e}")
+            print(f"⚠️ Draw error: {e}")
     
     def filter_and_annotate(
         self,
@@ -207,19 +141,7 @@ class SoMAnnotator:
         max_elements: int
     ) -> List[Dict]:
         """
-        Filter elements for cleaner annotation
-        
-        Priority:
-        1. Remove very small elements (< 10x10)
-        2. Prioritize elements near top of page
-        3. Limit to max_elements
-        
-        Args:
-            elements: Full element list
-            max_elements: Maximum to return
-            
-        Returns:
-            Filtered element list
+        Filter elements but DO NOT overwrite their IDs.
         """
         # Filter out very small elements
         valid_elements = [
@@ -233,15 +155,8 @@ class SoMAnnotator:
             key=lambda el: (el['bbox']['y'], el['bbox']['x'])
         )
         
-        # Take first max_elements
-        filtered = sorted_elements[:max_elements]
-        
-        # Reassign sequential IDs for clarity
-        for idx, element in enumerate(filtered):
-            element['original_id'] = element['id']
-            element['id'] = idx
-        
-        return filtered
+        # Just return the sliced list. Do NOT reassign 'id'.
+        return sorted_elements[:max_elements]
     
     def create_multi_color_annotation(
         self,

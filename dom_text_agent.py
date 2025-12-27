@@ -119,23 +119,26 @@ class DOMTextAgent:
             element_lines.append(line)
         
         # Create prompt (unchanged structure, but richer content)
+        # (Inside _create_prompt)
+        
         prompt = f"""PAGE: {page_info.get('title', 'Unknown')}
-URL: {page_info.get('url', 'Unknown')}
-
 TASK: {task}
 
 INTERACTIVE ELEMENTS:
 {chr(10).join(element_lines)}
 
-Which element ID best matches the task? 
+INSTRUCTIONS:
+1. Identify the TARGET element that matches the TASK "{task}".
+2. Prioritize matches in the "text" field (e.g., text="Search").
+3. CRITICAL: If an element has (no text), DO NOT select it unless the ID or Class explicitly matches the task (e.g., id="search-btn").
+4. If the generic class is "icon-button" but you are unsure which icon it is, RETURN "ID: NONE".
+5. Returning "ID: NONE" is better than a wrong guess. It allows our Vision System to take over.
 
-Follow this format exactly:
-REASONING: (Briefly explain why this element is the best match based on text, class names, or position)
-ID: (The number only)
+FORMAT:
+REASONING: (Why does this element match?)
+ID: (Number or NONE)
 
-If no match exists, return:
-REASONING: No elements match this description
-ID: NONE"""
+Your response:"""
         
         return prompt
     

@@ -89,30 +89,20 @@ class DOMExtractor:
                 
                 // Selectors for interactive elements
                 const selectors = [
-                    'button',
-                    'a',
-                    'input',
-                    'textarea',
-                    'select',
-                    '[role="button"]',
-                    '[role="link"]',
-                    '[onclick]',
-                    '[tabindex]'
+                    'button', 'a', 'input', 'textarea', 'select',
+                    '[role="button"]', '[role="link"]', '[onclick]', '[tabindex]'
                 ];
                 
-                // Get all matching elements
                 const allElements = new Set();
                 selectors.forEach(selector => {
                     document.querySelectorAll(selector).forEach(el => allElements.add(el));
                 });
                 
-                // Process each element
                 allElements.forEach(el => {
                     try {
-                        // Get computed style
                         const style = window.getComputedStyle(el);
                         
-                        // Check visibility
+                        // Visibility Check
                         const isVisible = (
                             style.display !== 'none' &&
                             style.visibility !== 'hidden' &&
@@ -120,44 +110,39 @@ class DOMExtractor:
                             el.offsetWidth > 0 &&
                             el.offsetHeight > 0
                         );
-                        
                         if (!isVisible) return;
                         
-                        // Get bounding box
                         const rect = el.getBoundingClientRect();
-                        
-                        // Filter by dimensions
                         if (rect.width <= 0 || rect.height <= 0) return;
                         
-                        // Extract text content (visible text only)
-                        let text = '';
-                        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                            text = el.placeholder || el.value || '';
-                        } else {
-                            text = el.innerText || el.textContent || '';
-                        }
-                        text = text.trim().substring(0, 100);
+                        // --- 🟢 FIX: Extract Hidden Accessibility Text ---
+                        let text = "";
                         
-                        // Determine type
-                        let type = 'button';
-                        if (el.tagName === 'INPUT') {
-                            type = el.type || 'text';
-                        } else if (el.tagName === 'A') {
-                            type = 'link';
-                        } else if (el.tagName === 'SELECT') {
-                            type = 'select';
-                        } else if (el.tagName === 'TEXTAREA') {
-                            type = 'textarea';
-                        } else if (el.tagName === 'BUTTON' || el.getAttribute('role') === 'button') {
-                            type = 'button';
-                        }
+                        // 1. Check aria-label (Used for icons like Microphone)
+                        const ariaLabel = el.getAttribute('aria-label');
+                        // 2. Check title (Tooltip text)
+                        const title = el.getAttribute('title');
+                        // 3. Check input values/placeholders
+                        const value = el.value;
+                        const placeholder = el.getAttribute('placeholder');
+                        // 4. Fallback to visible innerText
+                        const innerText = el.innerText || el.textContent;
                         
-                        // Build element data
+                        if (ariaLabel) text = ariaLabel;
+                        else if (title) text = title;
+                        else if (placeholder) text = placeholder;
+                        else if (value && el.tagName === 'INPUT') text = value;
+                        else if (innerText) text = innerText;
+                        
+                        // Clean text
+                        text = (text || "").replace(/\\s+/g, ' ').trim().substring(0, 100);
+                        // --- 🔴 FIX END ---
+
                         elements.push({
                             id: id++,
                             tag: el.tagName.toLowerCase(),
-                            text: text,
-                            type: type,
+                            text: text,  // Now this will say "Search with your voice"
+                            type: el.tagName === 'INPUT' ? (el.type || 'text') : 'button',
                             bbox: {
                                 x: Math.round(rect.x),
                                 y: Math.round(rect.y),
@@ -165,17 +150,14 @@ class DOMExtractor:
                                 h: Math.round(rect.height)
                             },
                             html_id: el.id || '',
-                            html_classes: el.className || '',
-                            is_visible: true
+                            html_classes: el.className || ''
                         });
                         
                     } catch (err) {
-                        // Skip elements that cause errors
-                        console.error('Error processing element:', err);
+                        console.error(err);
                     }
                 });
                 
-                // Sort by ID (already in order)
                 return elements.sort((a, b) => a.id - b.id);
             }
             """
