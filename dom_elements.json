@@ -2,183 +2,631 @@
   {
     "id": 0,
     "tag": "button",
-    "text": "GENERATE",
+    "text": "Continue",
     "type": "button",
     "bbox": {
-      "x": 835,
-      "y": 609,
-      "w": 236,
-      "h": 58
+      "x": 1081,
+      "y": 358,
+      "w": 105,
+      "h": 36
     },
-    "html_id": "generate-btn",
-    "html_classes": ""
+    "html_id": "",
+    "html_classes": "_42ft _4jy0 _9nq0 textPadding20px _4jy3 _4jy1 selected _51sy"
   },
   {
     "id": 1,
     "tag": "a",
-    "text": "",
+    "text": "Try another way",
     "type": "button",
     "bbox": {
-      "x": 35,
-      "y": 89,
-      "w": 242,
-      "h": 22
+      "x": 919,
+      "y": 358,
+      "w": 154,
+      "h": 36
     },
     "html_id": "",
-    "html_classes": ""
+    "html_classes": "_42ft _4jy0 _9nq1 textPadding20px _4jy3 _517h _51sy"
   },
   {
     "id": 2,
     "tag": "a",
-    "text": "Home",
+    "text": "Didn't get a code?",
     "type": "button",
     "bbox": {
-      "x": 1074,
-      "y": 42,
-      "w": 50,
-      "h": 122
+      "x": 718,
+      "y": 370,
+      "w": 104,
+      "h": 14
     },
     "html_id": "",
-    "html_classes": ""
+    "html_classes": "_9o1v"
   },
   {
     "id": 3,
     "tag": "a",
-    "text": "About Us",
+    "text": "Malayalam",
     "type": "button",
     "bbox": {
-      "x": 1179,
-      "y": 42,
-      "w": 80,
-      "h": 122
+      "x": 540,
+      "y": 671,
+      "w": 60,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_4_6x",
+    "html_classes": "_sv4"
   },
   {
     "id": 4,
     "tag": "a",
-    "text": "Services",
+    "text": "Tamil",
     "type": "button",
     "bbox": {
-      "x": 1312,
-      "y": 42,
-      "w": 75,
-      "h": 122
+      "x": 609,
+      "y": 671,
+      "w": 36,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_5_yF",
+    "html_classes": "_sv4"
   },
   {
     "id": 5,
     "tag": "a",
-    "text": "Careers",
+    "text": "Kannada",
     "type": "button",
     "bbox": {
-      "x": 1441,
-      "y": 42,
-      "w": 68,
-      "h": 122
+      "x": 655,
+      "y": 671,
+      "w": 34,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_6_2N",
+    "html_classes": "_sv4"
   },
   {
     "id": 6,
     "tag": "a",
-    "text": "Blogs",
+    "text": "Hindi",
     "type": "button",
     "bbox": {
-      "x": 1563,
-      "y": 42,
-      "w": 48,
-      "h": 122
+      "x": 699,
+      "y": 671,
+      "w": 24,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_7_Db",
+    "html_classes": "_sv4"
   },
   {
     "id": 7,
     "tag": "a",
-    "text": "Contact Us",
+    "text": "Urdu",
     "type": "button",
     "bbox": {
-      "x": 1665,
-      "y": 42,
-      "w": 97,
-      "h": 122
+      "x": 734,
+      "y": 671,
+      "w": 18,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_8_iX",
+    "html_classes": "_sv4"
   },
   {
     "id": 8,
     "tag": "a",
-    "text": "CONTACT US",
+    "text": "Bengali",
     "type": "button",
     "bbox": {
-      "x": 1655,
-      "y": 5382,
-      "w": 165,
-      "h": 54
+      "x": 761,
+      "y": 671,
+      "w": 28,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": "theme-btn theme-btn-one"
+    "html_id": "u_0_9_M6",
+    "html_classes": "_sv4"
   },
   {
     "id": 9,
     "tag": "a",
-    "text": "Our privacy policy",
+    "text": "Telugu",
     "type": "button",
     "bbox": {
-      "x": 234,
-      "y": 5900,
-      "w": 126,
-      "h": 18
+      "x": 799,
+      "y": 671,
+      "w": 38,
+      "h": 14
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "u_0_a_LA",
+    "html_classes": "_sv4"
   },
   {
     "id": 10,
     "tag": "a",
-    "text": "RED STAG LABS",
+    "text": "Spanish",
     "type": "button",
     "bbox": {
-      "x": 835,
-      "y": 5900,
-      "w": 125,
-      "h": 18
+      "x": 847,
+      "y": 671,
+      "w": 43,
+      "h": 14
+    },
+    "html_id": "u_0_b_zs",
+    "html_classes": "_sv4"
+  },
+  {
+    "id": 11,
+    "tag": "a",
+    "text": "Portuguese (Brazil)",
+    "type": "button",
+    "bbox": {
+      "x": 901,
+      "y": 671,
+      "w": 96,
+      "h": 14
+    },
+    "html_id": "u_0_c_ty",
+    "html_classes": "_sv4"
+  },
+  {
+    "id": 12,
+    "tag": "a",
+    "text": "French (France)",
+    "type": "button",
+    "bbox": {
+      "x": 1007,
+      "y": 671,
+      "w": 95,
+      "h": 14
+    },
+    "html_id": "u_0_d_fs",
+    "html_classes": "_sv4"
+  },
+  {
+    "id": 13,
+    "tag": "a",
+    "text": "Show more languages",
+    "type": "button",
+    "bbox": {
+      "x": 1111,
+      "y": 668,
+      "w": 30,
+      "h": 20
+    },
+    "html_id": "",
+    "html_classes": "_42ft _4jy0 _517i _517h _51sy"
+  },
+  {
+    "id": 14,
+    "tag": "a",
+    "text": "Sign up for Facebook",
+    "type": "button",
+    "bbox": {
+      "x": 462,
+      "y": 707,
+      "w": 41,
+      "h": 14
     },
     "html_id": "",
     "html_classes": ""
   },
   {
-    "id": 11,
-    "tag": "input",
-    "text": "1",
-    "type": "number",
+    "id": 15,
+    "tag": "a",
+    "text": "Log in to Facebook",
+    "type": "button",
     "bbox": {
-      "x": 862,
-      "y": 702,
-      "w": 70,
-      "h": 51
+      "x": 523,
+      "y": 707,
+      "w": 33,
+      "h": 14
     },
-    "html_id": "count-input",
+    "html_id": "",
     "html_classes": ""
   },
   {
-    "id": 12,
-    "tag": "input",
-    "text": "on",
-    "type": "checkbox",
+    "id": 16,
+    "tag": "a",
+    "text": "Take a look at Messenger.",
+    "type": "button",
     "bbox": {
-      "x": 952,
-      "y": 713,
-      "w": 20,
-      "h": 20
+      "x": 576,
+      "y": 707,
+      "w": 59,
+      "h": 14
     },
-    "html_id": "unique-checkbox",
+    "html_id": "",
     "html_classes": ""
+  },
+  {
+    "id": 17,
+    "tag": "a",
+    "text": "Facebook Lite for Android.",
+    "type": "button",
+    "bbox": {
+      "x": 655,
+      "y": 707,
+      "w": 75,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 18,
+    "tag": "a",
+    "text": "Browse in Video",
+    "type": "button",
+    "bbox": {
+      "x": 751,
+      "y": 707,
+      "w": 30,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 19,
+    "tag": "a",
+    "text": "Learn more about Meta Pay",
+    "type": "button",
+    "bbox": {
+      "x": 801,
+      "y": 707,
+      "w": 51,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 20,
+    "tag": "a",
+    "text": "Discover Meta",
+    "type": "button",
+    "bbox": {
+      "x": 872,
+      "y": 707,
+      "w": 59,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 21,
+    "tag": "a",
+    "text": "Learn more about Meta Quest",
+    "type": "button",
+    "bbox": {
+      "x": 950,
+      "y": 707,
+      "w": 62,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 22,
+    "tag": "a",
+    "text": "Learn more about Ray-Ban Meta",
+    "type": "button",
+    "bbox": {
+      "x": 1032,
+      "y": 707,
+      "w": 77,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 23,
+    "tag": "a",
+    "text": "Meta AI",
+    "type": "button",
+    "bbox": {
+      "x": 1129,
+      "y": 707,
+      "w": 41,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 24,
+    "tag": "a",
+    "text": "Meta AI more content",
+    "type": "button",
+    "bbox": {
+      "x": 1190,
+      "y": 707,
+      "w": 114,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 25,
+    "tag": "a",
+    "text": "Take a look at Instagram",
+    "type": "button",
+    "bbox": {
+      "x": 1324,
+      "y": 707,
+      "w": 53,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 26,
+    "tag": "a",
+    "text": "Check out Threads",
+    "type": "button",
+    "bbox": {
+      "x": 1397,
+      "y": 707,
+      "w": 44,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 27,
+    "tag": "a",
+    "text": "See the Voting Information Centre",
+    "type": "button",
+    "bbox": {
+      "x": 462,
+      "y": 726,
+      "w": 136,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 28,
+    "tag": "a",
+    "text": "Learn how we collect, use and share information to support Facebook.",
+    "type": "button",
+    "bbox": {
+      "x": 618,
+      "y": 726,
+      "w": 75,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 29,
+    "tag": "a",
+    "text": "Learn how to manage and control your privacy on Facebook.",
+    "type": "button",
+    "bbox": {
+      "x": 713,
+      "y": 726,
+      "w": 79,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 30,
+    "tag": "a",
+    "text": "Read our blog, discover the resource centre and find job opportunities.",
+    "type": "button",
+    "bbox": {
+      "x": 812,
+      "y": 726,
+      "w": 31,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 31,
+    "tag": "a",
+    "text": "Advertise on Facebook",
+    "type": "button",
+    "bbox": {
+      "x": 863,
+      "y": 726,
+      "w": 53,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 32,
+    "tag": "a",
+    "text": "Create a Page",
+    "type": "button",
+    "bbox": {
+      "x": 936,
+      "y": 726,
+      "w": 67,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 33,
+    "tag": "a",
+    "text": "Develop on our platform.",
+    "type": "button",
+    "bbox": {
+      "x": 1023,
+      "y": 726,
+      "w": 61,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 34,
+    "tag": "a",
+    "text": "Make your next career move to our brilliant company.",
+    "type": "button",
+    "bbox": {
+      "x": 1104,
+      "y": 726,
+      "w": 43,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 35,
+    "tag": "a",
+    "text": "Learn about cookies and Facebook.",
+    "type": "button",
+    "bbox": {
+      "x": 1167,
+      "y": 726,
+      "w": 43,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 36,
+    "tag": "a",
+    "text": "Learn about Ad Choices.",
+    "type": "button",
+    "bbox": {
+      "x": 1230,
+      "y": 724,
+      "w": 72,
+      "h": 19
+    },
+    "html_id": "",
+    "html_classes": "_41ug"
+  },
+  {
+    "id": 37,
+    "tag": "a",
+    "text": "Review our terms and policies.",
+    "type": "button",
+    "bbox": {
+      "x": 1322,
+      "y": 726,
+      "w": 33,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 38,
+    "tag": "a",
+    "text": "Visit our Help Centre.",
+    "type": "button",
+    "bbox": {
+      "x": 1375,
+      "y": 726,
+      "w": 25,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 39,
+    "tag": "a",
+    "text": "Visit our contact uploading and non-users notice.",
+    "type": "button",
+    "bbox": {
+      "x": 462,
+      "y": 745,
+      "w": 177,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 40,
+    "tag": "a",
+    "text": "View and edit your Facebook settings.",
+    "type": "button",
+    "bbox": {
+      "x": 659,
+      "y": 743,
+      "w": 1,
+      "h": 1
+    },
+    "html_id": "",
+    "html_classes": "accessible_elem"
+  },
+  {
+    "id": 41,
+    "tag": "a",
+    "text": "View your activity log",
+    "type": "button",
+    "bbox": {
+      "x": 679,
+      "y": 743,
+      "w": 1,
+      "h": 1
+    },
+    "html_id": "",
+    "html_classes": "accessible_elem"
+  },
+  {
+    "id": 42,
+    "tag": "input",
+    "text": "Enter code",
+    "type": "text",
+    "bbox": {
+      "x": 718,
+      "y": 273,
+      "w": 228,
+      "h": 52
+    },
+    "html_id": "recovery_code_entry",
+    "html_classes": "inputtext _9o1w _9o1_"
+  },
+  {
+    "id": 43,
+    "tag": "div",
+    "text": "Back to Previous Page",
+    "type": "button",
+    "bbox": {
+      "x": -16,
+      "y": 8,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1h6gzvc x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf xwcfey6"
+  },
+  {
+    "id": 44,
+    "tag": "div",
+    "text": "Facebook",
+    "type": "button",
+    "bbox": {
+      "x": 32,
+      "y": 17,
+      "w": 124,
+      "h": 22
+    },
+    "html_id": "",
+    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xt0psk2 x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x1n2onr6 x87ps6o x1lku1pv x1a2a7pz"
   }
 ]

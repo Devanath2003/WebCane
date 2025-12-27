@@ -71,23 +71,16 @@ class DOMExtractor:
     
     def extract_elements(self) -> List[Dict]:
         """
-        Extract all interactive elements with properties and bounding boxes
-        
-        Returns:
-            List of element dictionaries with id, tag, text, type, bbox, etc.
+        Extract interactive elements visible in the CURRENT VIEWPORT only.
         """
         if not self.page:
-            print("❌ Browser not started.")
             return []
         
         try:
-            # JavaScript to extract all interactive elements
             js_code = """
             () => {
                 const elements = [];
                 let id = 0;
-                
-                // Selectors for interactive elements
                 const selectors = [
                     'button', 'a', 'input', 'textarea', 'select',
                     '[role="button"]', '[role="link"]', '[onclick]', '[tabindex]'
@@ -98,11 +91,16 @@ class DOMExtractor:
                     document.querySelectorAll(selector).forEach(el => allElements.add(el));
                 });
                 
+                // Get viewport dimensions
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
                 allElements.forEach(el => {
                     try {
+                        const rect = el.getBoundingClientRect();
                         const style = window.getComputedStyle(el);
                         
-                        // Visibility Check
+                        // 1. Basic Visibility Check
                         const isVisible = (
                             style.display !== 'none' &&
                             style.visibility !== 'hidden' &&
@@ -112,20 +110,22 @@ class DOMExtractor:
                         );
                         if (!isVisible) return;
                         
-                        const rect = el.getBoundingClientRect();
-                        if (rect.width <= 0 || rect.height <= 0) return;
-                        
-                        // --- 🟢 FIX: Extract Hidden Accessibility Text ---
+                        // 2. 🟢 VIEWPORT CHECK: Element must be within the current window
+                        // We add a small buffer (-10/+10) to catch partially visible edge elements
+                        const inViewport = (
+                            rect.top < vh && 
+                            rect.bottom > 0 &&
+                            rect.left < vw && 
+                            rect.right > 0
+                        );
+                        if (!inViewport) return;
+
+                        // 3. Extract Text (with accessibility fix)
                         let text = "";
-                        
-                        // 1. Check aria-label (Used for icons like Microphone)
                         const ariaLabel = el.getAttribute('aria-label');
-                        // 2. Check title (Tooltip text)
                         const title = el.getAttribute('title');
-                        // 3. Check input values/placeholders
-                        const value = el.value;
                         const placeholder = el.getAttribute('placeholder');
-                        // 4. Fallback to visible innerText
+                        const value = el.value;
                         const innerText = el.innerText || el.textContent;
                         
                         if (ariaLabel) text = ariaLabel;
@@ -134,14 +134,12 @@ class DOMExtractor:
                         else if (value && el.tagName === 'INPUT') text = value;
                         else if (innerText) text = innerText;
                         
-                        // Clean text
                         text = (text || "").replace(/\\s+/g, ' ').trim().substring(0, 100);
-                        // --- 🔴 FIX END ---
 
                         elements.push({
                             id: id++,
                             tag: el.tagName.toLowerCase(),
-                            text: text,  // Now this will say "Search with your voice"
+                            text: text,
                             type: el.tagName === 'INPUT' ? (el.type || 'text') : 'button',
                             bbox: {
                                 x: Math.round(rect.x),
@@ -162,13 +160,16 @@ class DOMExtractor:
             }
             """
             
-            # Execute JavaScript and get results
             elements = self.page.evaluate(js_code)
-            output_file = 'dom_elements.json'
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(elements, f, indent=2, ensure_ascii=False)
-            
-            print(f"✅ Extracted {len(elements)} interactive elements")
+
+            try:
+                with open('dom_elements.json', 'w', encoding='utf-8') as f:
+                    json.dump(elements, f, indent=2, ensure_ascii=False)
+                # print(f"💾 Debug: Saved to dom_elements.json") 
+            except Exception as save_err:
+                print(f"⚠️ Failed to save debug JSON: {save_err}")
+                
+            print(f"✅ Extracted {len(elements)} elements (Viewport only)")
             return elements
             
         except Exception as e:
@@ -218,18 +219,17 @@ class DOMExtractor:
     
     def take_screenshot(self) -> Optional[bytes]:
         """
-        Take full page screenshot
-        
-        Returns:
-            Screenshot as bytes, or None on failure
+        Take screenshot of the CURRENT VIEWPORT only (not full page).
+        Prevents OOM errors on long pages.
         """
         if not self.page:
             print("❌ Browser not started.")
             return None
         
         try:
-            screenshot_bytes = self.page.screenshot(full_page=True)
-            print("✅ Screenshot captured")
+            # 🟢 FIX: full_page=False captures only the visible window (1920x1080)
+            screenshot_bytes = self.page.screenshot(full_page=False)
+            print("✅ Screenshot captured (Viewport only)")
             return screenshot_bytes
             
         except Exception as e:

@@ -7,32 +7,31 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 from typing import List, Dict, Tuple, Optional
 
-
 class SoMAnnotator:
     """Annotate screenshots with numbered boxes for vision-based automation"""
     
     def __init__(self):
         """Initialize drawing parameters and settings"""
         # Visual style parameters
-        self.box_color = '#FF0000'  # Bright red
-        self.box_thickness = 2
-        self.text_color = "#FF000014"
-        self.text_bg_color = '#FFFFFF'
-        self.font_size = 18
+        self.box_color = '#FF0000'  # Red
+        self.box_thickness = 2      # Thinner to see context
+        self.text_color = '#FFFFFF' # White text
+        self.text_bg_color = '#FF0000' # Red background
+        self.font_size = 18         # Readable size
         
-        # Try to load a good font, fallback to default
+        # Load font using your original robust logic
         self.font = self._load_font()
         
-        print("✅ SoMAnnotator initialized")
+        print("✅ SoMAnnotator initialized (Outside Labels Mode)")
     
     def _load_font(self):
-        """Load font for text annotations"""
+        """Load font for text annotations with fallback paths"""
         try:
-            # Try common font paths
+            # Common font paths (Linux, macOS, Windows)
             font_paths = [
-                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",  # Linux
-                "/System/Library/Fonts/Helvetica.ttc",  # macOS
-                "C:\\Windows\\Fonts\\arial.ttf",  # Windows
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                "/System/Library/Fonts/Helvetica.ttc",
+                "C:\\Windows\\Fonts\\arial.ttf",
                 "arial.ttf",
                 "DejaVuSans.ttf"
             ]
@@ -43,30 +42,35 @@ class SoMAnnotator:
                 except:
                     continue
             
-            # Fallback to default font
+            # Fallback
             print("⚠️  Using default font (no TrueType font found)")
             return ImageFont.load_default()
             
         except Exception as e:
             print(f"⚠️  Font loading error: {e}")
             return ImageFont.load_default()
-    
+
     def create_annotated_screenshot(
         self, 
         screenshot_bytes: bytes, 
         elements: List[Dict]
     ) -> Tuple[bytes, List[Dict]]:
-        if not screenshot_bytes or not elements:
+        """
+        Draws boxes labeled with INDEX (0, 1, 2...) instead of ID.
+        """
+        if not screenshot_bytes:
+            return b'', []
+        if not elements:
             return screenshot_bytes, []
         
         try:
             image = Image.open(io.BytesIO(screenshot_bytes))
             draw = ImageDraw.Draw(image)
             
-            # Draw each element using its INDEX in the list as the label
+            # Draw each element using its list INDEX (0, 1, 2...)
             for idx, element in enumerate(elements):
-                # We pass 'str(idx)' as the label to draw
-                self._draw_box_with_id(draw, element, self.box_color, self.font, label=str(idx))
+                # Pass 'str(idx)' as the label so the image shows 0, 1, 2...
+                self._draw_box_outside(draw, element, str(idx), self.box_color)
             
             output = io.BytesIO()
             image.save(output, format='PNG')
@@ -75,89 +79,94 @@ class SoMAnnotator:
         except Exception as e:
             print(f"❌ Failed to annotate screenshot: {e}")
             return screenshot_bytes, []
-    
-    def _draw_box_with_id(
-        self, 
-        draw: ImageDraw.ImageDraw, 
-        element: Dict, 
-        color: str, 
-        font: ImageFont.ImageFont,
-        label: str = None  # <--- New Argument
-    ):
-        try:
-            bbox = element['bbox']
-            x, y, w, h = bbox['x'], bbox['y'], bbox['w'], bbox['h']
-            
-            # Use provided label (index) or fallback to element ID
-            display_text = label if label is not None else str(element['id'])
-            
-            # Draw rectangle
-            draw.rectangle([(x, y), (x + w, y + h)], outline=color, width=self.box_thickness)
-            
-            # ... (Rest of your drawing code, but use `display_text` variable) ...
-            
-            # Example for text drawing part:
-            draw.text((x + 5, y + 5), display_text, fill=color, font=font)
 
-        except Exception as e:
-            print(f"⚠️ Draw error: {e}")
-    
     def filter_and_annotate(
         self,
         screenshot_bytes: bytes,
         elements: List[Dict],
-        max_elements: int = 20
+        max_elements: int = 30
     ) -> Tuple[bytes, List[Dict]]:
         """
-        Create annotated screenshot with filtered elements for clarity
-        
-        Args:
-            screenshot_bytes: Raw screenshot
-            elements: Full list of elements
-            max_elements: Maximum number of elements to annotate
-            
-        Returns:
-            Tuple of (annotated_image_bytes, filtered_elements)
+        Filter elements (viewport/size) and annotate with sequential numbers.
         """
         if not elements:
             return screenshot_bytes, []
-        
-        try:
-            # Filter elements
-            filtered_elements = self._filter_elements(elements, max_elements)
             
-            print(f"📊 Filtered {len(elements)} → {len(filtered_elements)} elements")
-            
-            # Annotate with filtered list
-            return self.create_annotated_screenshot(screenshot_bytes, filtered_elements)
-            
-        except Exception as e:
-            print(f"❌ Filter and annotate failed: {e}")
-            return screenshot_bytes, elements
-    
-    def _filter_elements(
-        self,
-        elements: List[Dict],
-        max_elements: int
-    ) -> List[Dict]:
-        """
-        Filter elements but DO NOT overwrite their IDs.
-        """
-        # Filter out very small elements
+        # 1. Filter out tiny elements
         valid_elements = [
-            el for el in elements
+            el for el in elements 
             if el['bbox']['w'] >= 10 and el['bbox']['h'] >= 10
         ]
         
-        # Sort by vertical position (top to bottom) then horizontal (left to right)
+        # 2. Sort (Top -> Bottom, Left -> Right)
         sorted_elements = sorted(
-            valid_elements,
+            valid_elements, 
             key=lambda el: (el['bbox']['y'], el['bbox']['x'])
         )
         
-        # Just return the sliced list. Do NOT reassign 'id'.
-        return sorted_elements[:max_elements]
-    
+        # 3. Limit count
+        filtered_elements = sorted_elements[:max_elements]
+        
+        # 4. Annotate (This calls create_annotated_screenshot internally)
+        return self.create_annotated_screenshot(screenshot_bytes, filtered_elements)
+
+    def _draw_box_outside(
+        self, 
+        draw: ImageDraw.ImageDraw, 
+        element: Dict, 
+        label: str,
+        color: str
+    ):
+        """
+        Draws the box with the label 'popped out' on top-left.
+        If element is at the very top of screen, flips label inside.
+        """
+        try:
+            bbox = element['bbox']
+            x, y, w, h = bbox['x'], bbox['y'], bbox['w'], bbox['h']
+            
+            # 1. Draw the Outline (Bounding Box)
+            draw.rectangle([(x, y), (x + w, y + h)], outline=color, width=self.box_thickness)
+            
+            # 2. Calculate Label Dimensions
+            padding = 4
+            try:
+                # Newer Pillow
+                left, top, right, bottom = draw.textbbox((0, 0), label, font=self.font)
+                text_w = right - left
+                text_h = bottom - top
+            except:
+                # Older Pillow
+                text_w, text_h = draw.textsize(label, font=self.font)
+            
+            # 3. Calculate Tag Position (Outside - Top Left)
+            tag_x = x
+            tag_y = y - (text_h + padding * 2)
+            
+            # 4. Safety Flip: If tag goes off-screen top, push it inside
+            if tag_y < 0:
+                tag_y = y
+                
+            # 5. Draw Label Background
+            draw.rectangle(
+                [
+                    (tag_x, tag_y), 
+                    (tag_x + text_w + padding * 2, tag_y + text_h + padding * 2)
+                ], 
+                fill=self.text_bg_color,
+                outline=color
+            )
+            
+            # 6. Draw Number
+            draw.text(
+                (tag_x + padding, tag_y + padding), 
+                label, 
+                fill=self.text_color, 
+                font=self.font
+            )
+        except Exception as e:
+            print(f"⚠️ Failed to draw element {label}: {e}")
+
     def create_multi_color_annotation(
         self,
         screenshot_bytes: bytes,
@@ -165,15 +174,7 @@ class SoMAnnotator:
         color_scheme: str = 'rainbow'
     ) -> Tuple[bytes, List[Dict]]:
         """
-        Create annotation with multiple colors for better distinction
-        
-        Args:
-            screenshot_bytes: Raw screenshot
-            elements: Element list
-            color_scheme: 'rainbow' or 'alternate'
-            
-        Returns:
-            Tuple of (annotated_image_bytes, elements)
+        (Preserved) Create annotation with multiple colors
         """
         if not screenshot_bytes or not elements:
             return screenshot_bytes, elements
@@ -182,23 +183,15 @@ class SoMAnnotator:
             image = Image.open(io.BytesIO(screenshot_bytes))
             draw = ImageDraw.Draw(image)
             
-            # Color schemes
-            if color_scheme == 'rainbow':
-                colors = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#FFFF00', '#00FFFF']
-            else:  # alternate
-                colors = ['#FF0000', '#00FF00']
+            colors = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#FFFF00', '#00FFFF']
             
-            # Draw each element with cycling colors
             for idx, element in enumerate(elements):
                 color = colors[idx % len(colors)]
-                self._draw_box_with_id(draw, element, color, self.font)
+                # Use the new drawing method here too
+                self._draw_box_outside(draw, element, str(idx), color)
             
-            # Convert to bytes
             output = io.BytesIO()
             image.save(output, format='PNG')
-            
-            print(f"✅ Created multi-color annotation with {len(elements)} elements")
-            
             return output.getvalue(), elements
             
         except Exception as e:

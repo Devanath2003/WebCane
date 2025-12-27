@@ -162,26 +162,31 @@ class VisionAgent:
                 f"[{el['id']}] {el['tag']} \"{text}\" at ({x}, {y})"
             )
         
-        prompt = f"""You are analyzing a web page screenshot where interactive elements are marked with red numbered boxes.
+        prompt = f"""You are an intelligent web automation agent. 
+You are analyzing a screenshot where interactive elements are marked with red tags (0, 1, 2...) very close to the element.
 
 TASK: {task}
 
-AVAILABLE ELEMENTS (numbered in the image with red boxes):
+VISIBLE ELEMENTS:
 {chr(10).join(element_lines)}
 
-Look at the screenshot carefully. Each interactive element has a red box with a number inside.
+INSTRUCTIONS:
+1. Analyze the visual appearance of the candidate elements (color, shape, icon).
+2. Compare each element against the task description.
+3. Eliminate elements that do not match the visual description.
+4. Select the single best match.
 
-Which numbered element should be clicked to accomplish the task?
+FORMAT:
+Observation: (Briefly describe the visual style of relevant boxes)
+Thought: (Why does one box match better than the others?)
+Answer: (The box number only)
 
-Consider:
-- Element appearance (color, icon, style, visual design)
-- Element position on the page
-- Visual context and surrounding elements
-- The element's likely function based on its appearance
+Example Response:
+Observation: Box 0 is a white input field. Box 2 is a blue rectangular button.
+Thought: The task asks for a "blue box". Box 2 is blue. Box 0 is white.
+Answer: 2
 
-Return ONLY the number (e.g., "5"). If no element matches, return "NONE".
-
-Answer:"""
+Your Analysis:"""
         
         return prompt
     
@@ -255,37 +260,41 @@ Answer:"""
     
     def _parse_response(self, response: str, elements: List[Dict]) -> int:
         """
-        Parse vision model response to extract element ID
-        
-        Args:
-            response: Raw model response
-            elements: List of elements for validation
-            
-        Returns:
-            Element ID or -1 if invalid/none
+        Parse vision model response.
+        Prioritizes explicit 'Answer: X' and avoids false positive 'NONE's in reasoning text.
         """
         try:
-            # Check for explicit "NONE"
-            if 'NONE' in response.upper():
+            # 🟢 1. First, look for a strict "Answer: X" pattern
+            # This is the most reliable signal.
+            match = re.search(r'Answer:\s*(\d+)', response, re.IGNORECASE)
+            
+            if match:
+                element_id = int(match.group(1))
+                # Validate range immediately
+                if 0 <= element_id < len(elements):
+                    return element_id
+            
+            # 🟡 2. If no strict answer, CHECK FOR "NONE" NOW
+            # Only check for NONE if we didn't find a clear answer above.
+            # We also strictly look for "Answer: NONE" or just the word NONE by itself to avoid sentence matching
+            if re.search(r'Answer:\s*NONE', response, re.IGNORECASE) or response.strip().upper() == 'NONE':
                 print("   Model returned NONE")
                 return -1
             
-            # Extract first number from response
+            # 🟠 3. Fallback: Last number in text
+            # (Only use this if the model forgot to write "Answer:")
             numbers = re.findall(r'\b\d+\b', response)
-            
-            if not numbers:
-                print(f"⚠️  No number found in response: {response}")
-                return -1
-            
-            # Get first number
-            element_id = int(numbers[0])
-            
-            # Validate range
-            if 0 <= element_id < len(elements):
-                return element_id
-            else:
-                print(f"⚠️  Element ID {element_id} out of range (0-{len(elements)-1})")
-                return -1
+            if numbers:
+                element_id = int(numbers[-1])
+                if 0 <= element_id < len(elements):
+                    return element_id
+
+            print(f"⚠️  No valid ID found in response: {response}")
+            return -1
+                
+        except Exception as e:
+            print(f"⚠️  Failed to parse response: {e}")
+            return -1
                 
         except Exception as e:
             print(f"⚠️  Failed to parse response: {e}")

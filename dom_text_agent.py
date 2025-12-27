@@ -96,30 +96,21 @@ class DOMTextAgent:
         page_info: Dict
     ) -> str:
         """
-        Create optimized prompt including HTML identifiers for better matching
+        Create optimized prompt with strict visual guardrails
         """
-        # Limit to first 30 elements for prompt efficiency
-        limited_elements = elements[:30]
+        # Limit to first 30 elements
+        limited_elements = elements[:50]
         
-        # Build element list
         element_lines = []
         for el in limited_elements:
-            # Format position
             x, y = el['bbox']['x'], el['bbox']['y']
-            
-            # Format text (truncate if needed)
             text = el['text'][:40] if el['text'] else '(no text)'
             
-            # --- UPDATED LINE: Added html_id and html_classes ---
-            # We include the ID and Class because they often contain words like 'search' or 'logo'
-            html_info = f"id='{el['html_id']}' class='{el['html_classes'][:50]}'"
+            # Include ID/Class for matching (e.g., class="btn-green")
+            html_info = f"id='{el['html_id']}"
             
-            # Build compact line with the new info
             line = f"[{el['id']}] {el['tag']} \"{text}\" {html_info} type={el['type']} at ({x}, {y})"
             element_lines.append(line)
-        
-        # Create prompt (unchanged structure, but richer content)
-        # (Inside _create_prompt)
         
         prompt = f"""PAGE: {page_info.get('title', 'Unknown')}
 TASK: {task}
@@ -129,13 +120,23 @@ INTERACTIVE ELEMENTS:
 
 INSTRUCTIONS:
 1. Identify the TARGET element that matches the TASK "{task}".
-2. Prioritize matches in the "text" field (e.g., text="Search").
-3. CRITICAL: If an element has (no text), DO NOT select it unless the ID or Class explicitly matches the task (e.g., id="search-btn").
-4. If the generic class is "icon-button" but you are unsure which icon it is, RETURN "ID: NONE".
-5. Returning "ID: NONE" is better than a wrong guess. It allows our Vision System to take over.
+2. SEARCH strategies:
+   - Text Match: Does the element text match the task?
+   - Attribute Match: Does the ID or Class contain the task words? (IMPORTANT - if there is no exact word as the task, return "None").
+   
+3. 🔴 VISUAL GUARDRAIL (CRITICAL): 
+   - You are a TEXT-ONLY system. You cannot see colors, icons, or shapes.
+   - If the task requires a visual match (e.g., "click the red button"), but the element's ID/Class does not contain the word "red", YOU MUST RETURN "ID: NONE".
+   - DO NOT GUESS based on common sense. 
+     * Example: Do not assume a "Delete" button is red. 
+     * Example: Do not assume a "Submit" button is green.
+     * Example: Do not assume a "Home" button uses a house icon.
+   - Returning "ID: NONE" allows our Vision System to take over, which is the correct behavior..
+
+4. If you are unsure, return "ID: NONE".
 
 FORMAT:
-REASONING: (Why does this element match?)
+REASONING: (Step-by-step thoughts. If task is visual/color and no text match found, state "Task requires vision" and return NONE)
 ID: (Number or NONE)
 
 Your response:"""
@@ -277,7 +278,7 @@ if __name__ == "__main__":
         print("\n" + "=" * 70)
         print(f"🤖 SYSTEM 1 ANALYSIS")
         print(f"Task: '{task}'")
-        print(f"Analyzing {min(len(elements), 30)} elements...")
+        print(f"Analyzing {min(len(elements), 50)} elements...")
         print("=" * 70)
         
         element_id = agent.find_element_for_task(elements, task, page_info)
@@ -325,7 +326,7 @@ if __name__ == "__main__":
             print("=" * 70)
             print("\n📊 Analysis:")
             print(f"   - No matching element found for task: '{task}'")
-            print(f"   - Total elements analyzed: {min(len(elements), 30)}")
+            print(f"   - Total elements analyzed: {min(len(elements), 50)}")
             print("\n💡 Suggestions:")
             print("   - Try rephrasing the task")
             print("   - Check if element exists on page")

@@ -143,7 +143,7 @@ class HybridAutomator:
         print("🚀 STEP 2: SYSTEM 1 - DOM Text Analysis")
         print("-" * 70)
         print("   Strategy: Fast text-based element matching")
-        print(f"   Analyzing: {min(len(elements), 30)} elements")
+        print(f"   Analyzing: {min(len(elements), 50)} elements")
         
         system1_start = time.time()
         element_id = self.text_agent.find_element_for_task(elements, task, page_info)
