@@ -286,6 +286,44 @@ class DOMExtractor:
             self.page = None
             self.browser = None
             self.playwright = None
+    def type_text(self, text: str) -> bool:
+        '''Type text into focused element'''
+        if not self.page:
+            return False
+        try:
+            self.page.keyboard.type(text, delay=50)
+            print(f"✅ Typed: {text}")
+            return True
+        except Exception as e:
+            print(f"❌ Type failed: {e}")
+            return False
+    
+    def press_key(self, key: str) -> bool:
+        '''Press keyboard key (Enter, Tab, Escape, etc.)'''
+        if not self.page:
+            return False
+        try:
+            self.page.keyboard.press(key)
+            print(f"✅ Pressed: {key}")
+            return True
+        except Exception as e:
+            print(f"❌ Key press failed: {e}")
+            return False
+    
+    def scroll_page(self, direction: str = "down", pixels: int = 500) -> bool:
+        '''Scroll the page'''
+        if not self.page:
+            return False
+        try:
+            if direction.lower() == "down":
+                self.page.evaluate(f"window.scrollBy(0, {pixels})")
+            elif direction.lower() == "up":
+                self.page.evaluate(f"window.scrollBy(0, -{pixels})")
+            print(f"✅ Scrolled {direction}")
+            return True
+        except Exception as e:
+            print(f"❌ Scroll failed: {e}")
+            return False
 
 
 # Interactive test function

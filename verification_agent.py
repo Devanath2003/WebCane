@@ -158,35 +158,69 @@ class VerificationAgent:
                 'retry_recommended': False
             }
         
-        # PRESS_KEY: Hard to verify without more context
+        # TYPE: Typing text doesn't cause page changes - assume success
+        if action_type == 'type':
+            return {
+                'success': True,
+                'confidence': 0.9,
+                'reason': 'Text typed into focused element (no page changes expected)',
+                'retry_recommended': False
+            }
+        
+        # PRESS_KEY: Depends on the key
         if action_type == 'press_key':
-            # If URL or title changed, likely successful (e.g., Enter submitted form)
-            if changes['url_changed'] or changes['title_changed']:
+            key = target.lower()
+            
+            # Enter/Submit keys should cause page changes
+            if key in ['enter', 'return']:
+                if changes['url_changed'] or changes['title_changed'] or changes['element_count_change'] > 5:
+                    return {
+                        'success': True,
+                        'confidence': 0.9,
+                        'reason': f'Page changed after pressing {target}',
+                        'retry_recommended': False
+                    }
+                else:
+                    # Enter pressed but nothing changed - might be loading
+                    return {
+                        'success': True,
+                        'confidence': 0.6,
+                        'reason': f'Pressed {target} - waiting for page response',
+                        'retry_recommended': False
+                    }
+            else:
+                # Other keys (Tab, Escape) - assume success
                 return {
                     'success': True,
                     'confidence': 0.8,
-                    'reason': f'Page changed after pressing {target}',
+                    'reason': f'Key {target} pressed',
                     'retry_recommended': False
                 }
-            # Otherwise, ambiguous - use LLM
-            return None
         
-        # FIND_AND_CLICK: Check for page changes
+        # FIND_AND_CLICK: Check what we're clicking
         if action_type == 'find_and_click':
+            # Check if we're clicking an INPUT/SEARCH element (won't cause page changes)
+            is_input_element = any(word in target for word in [
+                'search', 'input', 'field', 'box', 'text', 'email', 'password', 'username'
+            ])
+            
+            if is_input_element:
+                # Clicking input fields doesn't change the page!
+                return {
+                    'success': True,
+                    'confidence': 0.9,
+                    'reason': 'Input element clicked (no page changes expected)',
+                    'retry_recommended': False
+                }
+            
+            # For other clicks, expect changes
             return self._verify_element_interaction(action, changes)
         
-        # TYPE: Hard to verify without checking element value
-        if action_type == 'type':
-            # If we have element info showing input was updated, great
-            # Otherwise it's ambiguous
-            return None
-        
-        # SCROLL: Hard to verify
+        # SCROLL: Assume success
         if action_type == 'scroll':
-            # Assume success if no errors
             return {
                 'success': True,
-                'confidence': 0.7,
+                'confidence': 0.8,
                 'reason': 'Scroll action completed',
                 'retry_recommended': False
             }
