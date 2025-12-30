@@ -1,3 +1,4 @@
 My_Local_Models
 venv
 *.png
+.env
