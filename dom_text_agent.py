@@ -393,11 +393,11 @@ if __name__ == "__main__":
     print("=" * 70)
     
     # Setup - REPLACE THIS WITH YOUR ACTUAL GROQ KEY
-    GROQ_API_KEY = "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"  # Put your key here or use env var
+    GROQ_API_KEY = ""  # Put your key here or use env var
     
     # Initialize
     extractor = DOMExtractor()
-    if GROQ_API_KEY and GROQ_API_KEY != "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":
+    if GROQ_API_KEY and GROQ_API_KEY != "":
         agent = DOMTextAgent(groq_api_key=GROQ_API_KEY)
     else:
         # Check env var

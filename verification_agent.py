@@ -476,10 +476,10 @@ if __name__ == "__main__":
     print("=" * 70)
     
     # Setup - REPLACE THIS or use env var
-    GEMINI_API_KEY = "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc" 
+    GEMINI_API_KEY = "" 
     
     # If using Env Var, allow it to pass through
-    if GEMINI_API_KEY == "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc":
+    if GEMINI_API_KEY == "":
         GEMINI_API_KEY = None 
     
     agent = VerificationAgent(gemini_api_key=GEMINI_API_KEY)

@@ -528,9 +528,9 @@ if __name__ == "__main__":
     
     # Setup
     LOCAL_MODEL_PATH = r"C:\Users\devan\Desktop\Major Project\WebCane_1.0\My_Local_Models\Qwen3-VL-4B"
-    GEMINI_API_KEY = "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc"  # Replace or use env var
+    GEMINI_API_KEY = ""  # Replace or use env var
     
-    if GEMINI_API_KEY == "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc":
+    if GEMINI_API_KEY == "":
         GEMINI_API_KEY = None  # Will check env var
     
     # Initialize components

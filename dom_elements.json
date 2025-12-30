@@ -1,296 +1,226 @@
 [
   {
     "id": 0,
-    "tag": "a",
-    "text": "Facebook",
+    "tag": "button",
+    "text": "Owner",
     "type": "button",
     "bbox": {
-      "x": 64,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 138,
+      "y": 16,
+      "w": 78,
+      "h": 37
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1rg5ohu x1a2a7pz x1hc1fzr x1k90msu x6o7n8i xbxq160 xtzu7as"
+    "html_classes": "user-btn"
   },
   {
     "id": 1,
-    "tag": "a",
+    "tag": "button",
     "text": "Home",
     "type": "button",
     "bbox": {
-      "x": 612,
-      "y": 0,
-      "w": 130,
-      "h": 56
+      "x": 1594,
+      "y": 16,
+      "w": 74,
+      "h": 37
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k x1n2onr6 xh8yej3"
+    "html_classes": "user-btn"
   },
   {
     "id": 2,
-    "tag": "a",
-    "text": "Reels",
+    "tag": "button",
+    "text": "Dashboard",
     "type": "button",
     "bbox": {
-      "x": 750,
-      "y": 0,
-      "w": 130,
-      "h": 56
+      "x": 1676,
+      "y": 16,
+      "w": 107,
+      "h": 37
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k x1n2onr6 xh8yej3"
+    "html_classes": "user-btn"
   },
   {
     "id": 3,
-    "tag": "a",
-    "text": "Marketplace",
+    "tag": "button",
+    "text": "Logout",
     "type": "button",
     "bbox": {
-      "x": 888,
-      "y": 0,
-      "w": 130,
-      "h": 56
+      "x": 1799,
+      "y": 16,
+      "w": 89,
+      "h": 37
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k x1n2onr6 xh8yej3"
+    "html_classes": "login-btn logout-btn"
   },
   {
     "id": 4,
-    "tag": "a",
-    "text": "Groups",
+    "tag": "button",
+    "text": "Overview",
     "type": "button",
     "bbox": {
-      "x": 1025,
-      "y": 0,
-      "w": 130,
-      "h": 56
+      "x": 37,
+      "y": 114,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k x1n2onr6 xh8yej3"
+    "html_classes": "sidebar-tab active"
   },
   {
     "id": 5,
-    "tag": "a",
-    "text": "Gaming",
+    "tag": "button",
+    "text": "Stats",
     "type": "button",
     "bbox": {
-      "x": 1163,
-      "y": 0,
-      "w": 130,
-      "h": 56
+      "x": 37,
+      "y": 171,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjbqb8w x1ejq31n x18oe1m7 x1sy0etr xstzfhl x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1fmog5m xu25z0z x140muxe xo1y3bh x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k x1n2onr6 xh8yej3"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 6,
-    "tag": "a",
-    "text": "Choose listing type",
+    "tag": "button",
+    "text": "Employees",
     "type": "button",
     "bbox": {
-      "x": 8,
-      "y": 113,
-      "w": 344,
-      "h": 52
+      "x": 37,
+      "y": 228,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1obq294 x5a5i1n xde0f50 x15x8krk x1lliihq xljulmy"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 7,
-    "tag": "a",
-    "text": "Your listings",
+    "tag": "button",
+    "text": "Service Type",
     "type": "button",
     "bbox": {
-      "x": 8,
-      "y": 190,
-      "w": 344,
-      "h": 52
+      "x": 37,
+      "y": 285,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1obq294 x5a5i1n xde0f50 x15x8krk x1lliihq"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 8,
-    "tag": "a",
-    "text": "Seller Help",
+    "tag": "button",
+    "text": "Man Power Category",
     "type": "button",
     "bbox": {
-      "x": 8,
-      "y": 242,
-      "w": 344,
-      "h": 52
+      "x": 37,
+      "y": 342,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1obq294 x5a5i1n xde0f50 x15x8krk x1lliihq"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 9,
-    "tag": "div",
-    "text": "Close",
+    "tag": "button",
+    "text": "Machinery",
     "type": "button",
     "bbox": {
-      "x": 16,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 399,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf x18l40ae x14ctfv"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 10,
-    "tag": "div",
-    "text": "Menu",
+    "tag": "button",
+    "text": "Machine Category",
     "type": "button",
     "bbox": {
-      "x": 1705,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 456,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf x1qhmfi1"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 11,
-    "tag": "div",
-    "text": "Messenger",
+    "tag": "button",
+    "text": "Consumables",
     "type": "button",
     "bbox": {
-      "x": 1753,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 513,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf x1qhmfi1"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 12,
-    "tag": "div",
-    "text": "Notifications, 20 unread",
+    "tag": "button",
+    "text": "Customers",
     "type": "button",
     "bbox": {
-      "x": 1801,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 569,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf x1qhmfi1"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 13,
-    "tag": "div",
-    "text": "Notifications, 20 unread",
+    "tag": "button",
+    "text": "Rejected Jobs",
     "type": "button",
     "bbox": {
-      "x": 1827,
-      "y": 2,
-      "w": 24,
-      "h": 19
+      "x": 37,
+      "y": 626,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x3nfvp2 x1q0g3np x87ps6o x1lku1pv x1a2a7pz x10l6tqk x1vjfegm x1pe450p xtu2xtp"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 14,
-    "tag": "div",
-    "text": "Your profile",
+    "tag": "button",
+    "text": "Console",
     "type": "button",
     "bbox": {
-      "x": 1849,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 683,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1a2a7pz xzsf02u x1rg5ohu"
+    "html_classes": "sidebar-tab "
   },
   {
     "id": 15,
-    "tag": "div",
-    "text": "Close",
+    "tag": "button",
+    "text": "Shop Setting",
     "type": "button",
     "bbox": {
-      "x": 16,
-      "y": 8,
-      "w": 40,
-      "h": 40
+      "x": 37,
+      "y": 740,
+      "w": 224,
+      "h": 55
     },
     "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x1iwo8zk x1033uif x179ill4 x1b60jn0 x972fbf x10w94by x1qhh985 x14e42zd x9f619 x78zum5 xl56j7k xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x1vqgdyp x100vrsf x1qhmfi1"
-  },
-  {
-    "id": 16,
-    "tag": "div",
-    "text": "Item for sale Create a single listing for one or more items to sell.",
-    "type": "button",
-    "bbox": {
-      "x": 881,
-      "y": 452,
-      "w": 158,
-      "h": 210
-    },
-    "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1a2a7pz x78zum5 x1us19tq xh8yej3"
-  },
-  {
-    "id": 17,
-    "tag": "div",
-    "text": "Vehicle for sale Sell a car, truck or other type of vehicle.",
-    "type": "button",
-    "bbox": {
-      "x": 1051,
-      "y": 452,
-      "w": 158,
-      "h": 210
-    },
-    "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1a2a7pz x78zum5 x1us19tq xh8yej3"
-  },
-  {
-    "id": 18,
-    "tag": "div",
-    "text": "Home for sale or rent List a house or apartment for sale or rent.",
-    "type": "button",
-    "bbox": {
-      "x": 1221,
-      "y": 452,
-      "w": 158,
-      "h": 210
-    },
-    "html_id": "",
-    "html_classes": "x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1a2a7pz x78zum5 x1us19tq xh8yej3"
-  },
-  {
-    "id": 19,
-    "tag": "div",
-    "text": "New message",
-    "type": "button",
-    "bbox": {
-      "x": 1841,
-      "y": 1016,
-      "w": 48,
-      "h": 48
-    },
-    "html_id": "",
-    "html_classes": "x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1l31dnx x1c9tyrk xeusxvb x1pahc9y x1ertn4p x1qeybcx x3nfvp2 xsdox4t xl56j7k x1n2onr6 x1useyqa x19xcq9t"
-  },
-  {
-    "id": 20,
-    "tag": "h1",
-    "text": "Create new listing",
-    "type": "button",
-    "bbox": {
-      "x": 16,
-      "y": 69,
-      "w": 328,
-      "h": 28
-    },
-    "html_id": "",
-    "html_classes": "html-h1 xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x1vvkbs x1heor9g x1qlqyl8 x1pd3egz x1a2a7pz"
+    "html_classes": "sidebar-tab "
   }
 ]

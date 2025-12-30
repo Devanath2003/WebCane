@@ -586,9 +586,9 @@ if __name__ == "__main__":
     print("=" * 70)
     
     # Setup
-    GEMINI_API_KEY = "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc"  # Replace or use env var
+    GEMINI_API_KEY = ""  # Replace or use env var
     
-    if GEMINI_API_KEY == "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc":
+    if GEMINI_API_KEY == "":
         GEMINI_API_KEY = None  # Will check env var
     
     agent = PlanningAgent(gemini_api_key=GEMINI_API_KEY)
