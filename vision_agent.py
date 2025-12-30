@@ -47,7 +47,7 @@ class VisionAgent:
         # Gemini setup
         self.gemini_available = False
         self.gemini_model = None
-        self.gemini_model_name = "gemini-robotics-er-1.5-preview"
+        self.gemini_model_name = "gemini-2.5-flash"
         
         # Local model setup
         self.local_model = None
