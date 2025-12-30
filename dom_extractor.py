@@ -19,7 +19,8 @@ class DOMExtractor:
         
     def start_browser(self, headless: bool = False) -> bool:
         """
-        Launch Chromium browser with Playwright
+        Launch Chromium browser with Playwright.
+        REUSES existing browser if already running to prevent asyncio errors.
         
         Args:
             headless: Run browser in headless mode
@@ -27,6 +28,23 @@ class DOMExtractor:
         Returns:
             True on success, False on failure
         """
+        # 🟢 FIX: Check if Playwright is already active to avoid asyncio conflict
+        if self.playwright and self.browser:
+            try:
+                if self.browser.is_connected():
+                    # Check if page exists and is open
+                    if self.page and not self.page.is_closed():
+                        print("   ♻️  Browser already active. Reusing session.")
+                        return True
+                    else:
+                        print("   ♻️  Browser active, opening new page.")
+                        self.page = self.browser.new_page(viewport={'width': 1920, 'height': 1080})
+                        return True
+            except Exception as e:
+                print(f"   ⚠️  Existing browser session invalid: {e}. Restarting...")
+                self.close()
+
+        # Start new session if none exists
         try:
             self.playwright = sync_playwright().start()
             self.browser = self.playwright.chromium.launch(headless=headless)
@@ -39,6 +57,8 @@ class DOMExtractor:
             
         except Exception as e:
             print(f"❌ Failed to start browser: {e}")
+            if "asyncio loop" in str(e):
+                print("   💡 Tip: This error happens when restarting. The fix above prevents this.")
             return False
     
     def navigate(self, url: str) -> bool:
@@ -59,8 +79,11 @@ class DOMExtractor:
             # Navigate with proper waits
             self.page.goto(url, wait_until='domcontentloaded', timeout=30000)
             
-            # Wait for network to be idle
-            self.page.wait_for_load_state('networkidle', timeout=10000)
+            # Wait for network to be idle (with fallback)
+            try:
+                self.page.wait_for_load_state('networkidle', timeout=5000)
+            except:
+                pass # Ignore timeout if network is busy (ads, etc.)
             
             print(f"✅ Navigated to: {url}")
             return True
@@ -267,25 +290,6 @@ class DOMExtractor:
                 'viewport': {'width': 0, 'height': 0}
             }
     
-    def close(self):
-        """Close browser and cleanup resources"""
-        try:
-            if self.page:
-                self.page.close()
-            if self.browser:
-                self.browser.close()
-            if self.playwright:
-                self.playwright.stop()
-            
-            print("✅ Browser closed")
-            
-        except Exception as e:
-            print(f"⚠️ Error during cleanup: {e}")
-        
-        finally:
-            self.page = None
-            self.browser = None
-            self.playwright = None
     def type_text(self, text: str) -> bool:
         '''Type text into focused element'''
         if not self.page:
@@ -324,6 +328,26 @@ class DOMExtractor:
         except Exception as e:
             print(f"❌ Scroll failed: {e}")
             return False
+            
+    def close(self):
+        """Close browser and cleanup resources"""
+        try:
+            if self.page:
+                self.page.close()
+            if self.browser:
+                self.browser.close()
+            if self.playwright:
+                self.playwright.stop()
+            
+            print("✅ Browser closed")
+            
+        except Exception as e:
+            print(f"⚠️ Error during cleanup: {e}")
+        
+        finally:
+            self.page = None
+            self.browser = None
+            self.playwright = None
 
 
 # Interactive test function

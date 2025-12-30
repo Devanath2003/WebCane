@@ -9,7 +9,14 @@ from som_annotator import SoMAnnotator
 from vision_agent import VisionAgent
 from typing import List, Dict
 import time
+import os
 
+# Load .env file if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 class HybridAutomator:
     """
@@ -18,25 +25,38 @@ class HybridAutomator:
     - System 2: Vision-based fallback with SoM annotations
     """
     
-    def __init__(self, vision_model_path: str = None):
+    def __init__(
+        self, 
+        vision_model_path: str = None,
+        groq_api_key: str = None,
+        gemini_api_key: str = None
+    ):
         """
         Initialize all automation components
         
         Args:
             vision_model_path: Path to Qwen3-VL model (optional, lazy load)
+            groq_api_key: Groq API Key (overrides env var)
+            gemini_api_key: Gemini API Key (overrides env var)
         """
         print("=" * 70)
         print("HYBRID AUTOMATOR - Initializing Two-System Architecture")
         print("=" * 70)
         
+        # Save config for lazy loading
+        self.vision_model_path = vision_model_path
+        self.gemini_api_key = gemini_api_key
+        
         # Initialize components
         print("\n📦 Initializing components...")
         self.extractor = DOMExtractor()
-        self.text_agent = DOMTextAgent()
+        
+        # ✅ PASS GROQ KEY HERE
+        # If groq_api_key is None, the agent will look for GROQ_API_KEY in env (loaded from .env)
+        self.text_agent = DOMTextAgent(groq_api_key=groq_api_key)
         self.annotator = SoMAnnotator()
         
         # Vision agent (lazy load)
-        self.vision_model_path = vision_model_path
         self.vision_agent = None
         
         # Statistics tracking
@@ -204,7 +224,7 @@ class HybridAutomator:
             annotated_img, filtered_elements = self.annotator.filter_and_annotate(
                 screenshot,
                 elements,
-                max_elements=15  # Limit for vision clarity
+                max_elements=60  # Limit for vision clarity
             )
             
             # Save annotated image temporarily

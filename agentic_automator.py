@@ -1,12 +1,18 @@
-
 from hybrid_automator import HybridAutomator
 from planning_agent import PlanningAgent
 from verification_agent import VerificationAgent
 from typing import List, Dict, Optional
 import time
+import datetime
 import json
-from datetime import datetime
+import os
 
+# Load .env file if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 class AgenticAutomator:
     """
@@ -17,12 +23,19 @@ class AgenticAutomator:
     - Recovery: Retry failed steps
     """
     
-    def __init__(self, qwen_model_path: str = None):
+    def __init__(
+        self, 
+        qwen_model_path: str = None,
+        groq_api_key: str = None,
+        gemini_api_key: str = None
+    ):
         """
         Initialize the complete agentic system
         
         Args:
             qwen_model_path: Path to Qwen3-VL model for vision (optional)
+            groq_api_key: Groq API Key (optional)
+            gemini_api_key: Gemini API Key (optional)
         """
         print("=" * 70)
         print("🤖 AGENTIC WEB AUTOMATOR - Initializing")
@@ -30,10 +43,18 @@ class AgenticAutomator:
         
         print("\n📦 Loading components...")
         
-        # Initialize all agents
-        self.automator = HybridAutomator(vision_model_path=qwen_model_path)
-        self.planner = PlanningAgent()
-        self.verifier = VerificationAgent()
+        # Initialize all agents with keys
+        # ✅ PASS KEYS TO HYBRID AUTOMATOR
+        self.automator = HybridAutomator(
+            vision_model_path=qwen_model_path,
+            groq_api_key=groq_api_key,
+            gemini_api_key=gemini_api_key
+        )
+        
+        # ✅ PASS GEMINI KEY TO PLANNER & VERIFIER
+        # If gemini_api_key is None, they will check os.getenv('GEMINI_API_KEY')
+        self.planner = PlanningAgent(gemini_api_key=gemini_api_key)
+        self.verifier = VerificationAgent(gemini_api_key=gemini_api_key)
         
         # Execution tracking
         self.execution_log = []

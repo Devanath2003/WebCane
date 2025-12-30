@@ -1,6 +1,7 @@
 """
-Vision Agent - System 2: Vision-based Element Finding
-Uses Qwen3-VL-4B with SoM annotations to identify elements visually
+Vision Agent - System 2: Hybrid Cloud + Local Vision
+Primary: Gemini 2.0 Flash (Vision)
+Fallback: Qwen3-VL-4B (Local)
 """
 
 import torch
@@ -8,38 +9,112 @@ from transformers import AutoProcessor, AutoModelForVision2Seq, BitsAndBytesConf
 from PIL import Image
 import re
 from typing import List, Dict, Optional
+import os
+
+# Gemini imports
+try:
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+    print("⚠️  google-generativeai library not installed. Run: pip install google-generativeai")
 
 
 class VisionAgent:
-    """Vision-based element finder using Qwen3-VL-4B (System 2)"""
+    """
+    Hybrid vision-based element finder:
+    - Primary: Gemini 2.0 Flash (Fast & Powerful Vision)
+    - Fallback: Qwen3-VL-4B (Local)
+    """
     
-    def __init__(self, model_path: str):
+    def __init__(
+        self, 
+        local_model_path: str,
+        gemini_api_key: str = None,
+        prefer_local: bool = False
+    ):
         """
-        Initialize Vision Agent with model path
+        Initialize hybrid vision agent
         
         Args:
-            model_path: Path to local Qwen3-VL-4B model directory
+            local_model_path: Path to local Qwen3-VL-4B model directory
+            gemini_api_key: Gemini API key (or set GEMINI_API_KEY env var)
+            prefer_local: If True, use local model first (for testing)
         """
-        self.model_path = model_path
-        self.model = None
-        self.processor = None
-        self.model_loaded = False
+        self.local_model_path = local_model_path
+        self.prefer_local = prefer_local
         
-        print(f"🤖 VisionAgent initialized")
-        print(f"   Model path: {model_path}")
-        print(f"   Model will load on first use (lazy loading)")
+        # Gemini setup
+        self.gemini_available = False
+        self.gemini_model = None
+        self.gemini_model_name = "gemini-robotics-er-1.5-preview"
+        
+        # Local model setup
+        self.local_model = None
+        self.processor = None
+        self.local_model_loaded = False
+        
+        # Statistics
+        self.stats = {
+            'gemini_success': 0,
+            'gemini_failures': 0,
+            'local_success': 0,
+            'local_failures': 0
+        }
+        
+        print(f"🤖 Initializing Hybrid VisionAgent")
+        print(f"   Primary: Gemini ({self.gemini_model_name})")
+        print(f"   Fallback: Qwen3-VL-4B (Local)")
+        
+        # Setup Gemini
+        if not prefer_local:
+            self._setup_gemini(gemini_api_key)
+        
+        print(f"✅ Hybrid vision agent ready!")
+        if self.gemini_available:
+            print(f"   ⚡ Gemini: Available")
+        else:
+            print(f"   ⚠️  Gemini: Not available (will use local only)")
+        print(f"   🖥️  Local: Ready (lazy load)")
     
-    def _load_model(self):
+    def _setup_gemini(self, api_key: str = None):
+        """Setup Gemini API"""
+        if not GEMINI_AVAILABLE:
+            print("   ⚠️  google-generativeai library not installed")
+            return
+        
+        try:
+            # Get API key from parameter or environment
+            api_key = api_key or os.getenv('GEMINI_API_KEY')
+            
+            if not api_key:
+                print("   ⚠️  No Gemini API key provided")
+                print("       Set GEMINI_API_KEY env var or pass to constructor")
+                return
+            
+            # Configure Gemini
+            genai.configure(api_key=api_key)
+            
+            # Initialize model
+            self.gemini_model = genai.GenerativeModel(self.gemini_model_name)
+            
+            self.gemini_available = True
+            print(f"   ✅ Gemini configured")
+            
+        except Exception as e:
+            print(f"   ⚠️  Gemini setup failed: {e}")
+            self.gemini_available = False
+    
+    def _load_local_model(self):
         """
-        Load Qwen3-VL-4B model with 4-bit quantization
-        Uses lazy loading to save memory
+        Load Qwen3-VL-4B model with 4-bit quantization (lazy loading)
         """
-        if self.model_loaded:
-            print("✅ Model already loaded")
+        if self.local_model_loaded:
+            print("✅ Local model already loaded")
             return
         
         print("\n" + "=" * 70)
-        print("🔄 Loading Qwen3-VL-4B model with 4-bit quantization...")
+        print("📦 Loading Qwen3-VL-4B model with 4-bit quantization...")
         print("   This may take 30-60 seconds on first load...")
         print("=" * 70)
         
@@ -54,8 +129,8 @@ class VisionAgent:
             
             print("\n📦 Loading model...")
             # Load model with quantization
-            self.model = AutoModelForVision2Seq.from_pretrained(
-                self.model_path,
+            self.local_model = AutoModelForVision2Seq.from_pretrained(
+                self.local_model_path,
                 quantization_config=bnb_config,
                 device_map="auto",
                 trust_remote_code=True,
@@ -65,15 +140,15 @@ class VisionAgent:
             print("📦 Loading processor...")
             # Load processor
             self.processor = AutoProcessor.from_pretrained(
-                self.model_path,
+                self.local_model_path,
                 trust_remote_code=True
             )
             
-            self.model_loaded = True
+            self.local_model_loaded = True
             
             # Print device info
-            device = next(self.model.parameters()).device
-            print(f"\n✅ Model loaded successfully!")
+            device = next(self.local_model.parameters()).device
+            print(f"\n✅ Local model loaded successfully!")
             print(f"   Device: {device}")
             print(f"   Quantization: 4-bit")
             
@@ -86,7 +161,7 @@ class VisionAgent:
             print("=" * 70 + "\n")
             
         except Exception as e:
-            print(f"\n❌ Failed to load model: {e}")
+            print(f"\n❌ Failed to load local model: {e}")
             print("\nTroubleshooting:")
             print("1. Check model path is correct")
             print("2. Ensure model files are downloaded")
@@ -100,7 +175,7 @@ class VisionAgent:
         task: str
     ) -> int:
         """
-        Find element using vision analysis of annotated screenshot
+        Find element using hybrid vision: Try Gemini → Fallback to Local
         
         Args:
             annotated_image_path: Path to SoM-annotated screenshot
@@ -108,43 +183,123 @@ class VisionAgent:
             task: Task description (e.g., "click the blue button")
             
         Returns:
-            Element ID (0-N) or -1 if not found
+            Element index (0-N) or -1 if not found
         """
         if not elements:
             print("❌ No elements provided")
             return -1
         
+        # Create prompt once
+        prompt = self._create_vision_prompt(elements, task)
+        
+        # Try primary model first
+        if not self.prefer_local and self.gemini_available:
+            element_idx = self._try_gemini(annotated_image_path, prompt, elements)
+            if element_idx is not None:
+                return element_idx
+            # If Gemini failed, fallback to local
+            print("   🔄 Falling back to local model...")
+        
+        # Use local model
+        element_idx = self._try_local(annotated_image_path, prompt, elements)
+        return element_idx if element_idx is not None else -1
+    
+    def _try_gemini(
+        self, 
+        image_path: str, 
+        prompt: str, 
+        elements: List[Dict]
+    ) -> Optional[int]:
+        """
+        Try Gemini API for vision analysis
+        
+        Returns:
+            Element index or None on failure (triggers fallback)
+        """
         try:
-            # Load model if needed (lazy loading)
-            if not self.model_loaded:
-                self._load_model()
+            print(f"🤖 Analyzing with Gemini ({self.gemini_model_name})...")
             
-            # Create vision prompt
-            prompt = self._create_vision_prompt(elements, task)
-            
-            print(f"🔍 Analyzing screenshot with vision model...")
-            print(f"   Task: {task}")
-            print(f"   Elements: {len(elements)}")
+            # Upload image
+            image_file = genai.upload_file(image_path)
             
             # Generate response
-            response = self._generate_response(annotated_image_path, prompt)
+            response = self.gemini_model.generate_content(
+                [image_file, prompt],
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.1,
+                    max_output_tokens=256,
+                )
+            )
             
-            print(f"🤖 Vision Response: {response}")
+            llm_response = response.text.strip()
+            print(f"🤖 Gemini Response: {llm_response}")
             
             # Parse response
-            element_id = self._parse_response(response, elements)
+            element_idx = self._parse_response(llm_response, elements)
             
-            return element_id
+            if element_idx >= 0:
+                self.stats['gemini_success'] += 1
+                return element_idx
+            else:
+                self.stats['gemini_failures'] += 1
+                return element_idx
             
         except Exception as e:
-            print(f"❌ Vision analysis failed: {e}")
-            import traceback
-            traceback.print_exc()
-            return -1
+            # Handle specific errors
+            error_msg = str(e).lower()
+            
+            if 'quota' in error_msg or 'rate limit' in error_msg or '429' in error_msg:
+                print(f"   ⚠️  Gemini rate limited")
+            elif 'resource_exhausted' in error_msg:
+                print(f"   ⚠️  Gemini quota exceeded")
+            else:
+                print(f"   ⚠️  Gemini error: {e}")
+            
+            self.stats['gemini_failures'] += 1
+            return None  # Trigger fallback
+    
+    def _try_local(
+        self, 
+        image_path: str, 
+        prompt: str, 
+        elements: List[Dict]
+    ) -> Optional[int]:
+        """
+        Try local Qwen3-VL model
+        
+        Returns:
+            Element index or None on failure
+        """
+        try:
+            # Ensure model is loaded
+            if not self.local_model_loaded:
+                self._load_local_model()
+            
+            print(f"🤖 Analyzing with Qwen3-VL-4B (local)...")
+            
+            # Generate response using existing logic
+            response = self._generate_local_response(image_path, prompt)
+            
+            print(f"🤖 Local Response: {response}")
+            
+            # Parse response
+            element_idx = self._parse_response(response, elements)
+            
+            if element_idx >= 0:
+                self.stats['local_success'] += 1
+            else:
+                self.stats['local_failures'] += 1
+            
+            return element_idx
+            
+        except Exception as e:
+            print(f"❌ Local model error: {e}")
+            self.stats['local_failures'] += 1
+            return None
     
     def _create_vision_prompt(self, elements: List[Dict], task: str) -> str:
         """
-        Create prompt for vision model
+        Create prompt for vision models (works for both Gemini and Qwen3-VL)
         
         Args:
             elements: List of elements
@@ -190,9 +345,9 @@ Your Analysis:"""
         
         return prompt
     
-    def _generate_response(self, image_path: str, prompt: str) -> str:
+    def _generate_local_response(self, image_path: str, prompt: str) -> str:
         """
-        Generate response using Qwen3-VL model
+        Generate response using local Qwen3-VL model
         
         Args:
             image_path: Path to annotated screenshot
@@ -229,11 +384,11 @@ Your Analysis:"""
             )
             
             # Move to model's device
-            inputs = inputs.to(self.model.device)
+            inputs = inputs.to(self.local_model.device)
             
             # Generate response
             with torch.no_grad():
-                generated_ids = self.model.generate(
+                generated_ids = self.local_model.generate(
                     **inputs,
                     max_new_tokens=128,
                     do_sample=False,
@@ -255,17 +410,16 @@ Your Analysis:"""
             return output_text.strip()
             
         except Exception as e:
-            print(f"❌ Generation failed: {e}")
+            print(f"❌ Local generation failed: {e}")
             raise
     
     def _parse_response(self, response: str, elements: List[Dict]) -> int:
         """
-        Parse vision model response.
+        Parse vision model response (works for both Gemini and Qwen3-VL)
         Prioritizes explicit 'Answer: X' and avoids false positive 'NONE's in reasoning text.
         """
         try:
             # 🟢 1. First, look for a strict "Answer: X" pattern
-            # This is the most reliable signal.
             match = re.search(r'Answer:\s*(\d+)', response, re.IGNORECASE)
             
             if match:
@@ -275,14 +429,11 @@ Your Analysis:"""
                     return element_id
             
             # 🟡 2. If no strict answer, CHECK FOR "NONE" NOW
-            # Only check for NONE if we didn't find a clear answer above.
-            # We also strictly look for "Answer: NONE" or just the word NONE by itself to avoid sentence matching
             if re.search(r'Answer:\s*NONE', response, re.IGNORECASE) or response.strip().upper() == 'NONE':
                 print("   Model returned NONE")
                 return -1
             
             # 🟠 3. Fallback: Last number in text
-            # (Only use this if the model forgot to write "Answer:")
             numbers = re.findall(r'\b\d+\b', response)
             if numbers:
                 element_id = int(numbers[-1])
@@ -295,35 +446,67 @@ Your Analysis:"""
         except Exception as e:
             print(f"⚠️  Failed to parse response: {e}")
             return -1
-                
-        except Exception as e:
-            print(f"⚠️  Failed to parse response: {e}")
-            return -1
+    
+    def get_statistics(self) -> Dict:
+        """Get usage statistics"""
+        total_requests = sum(self.stats.values())
+        
+        return {
+            'total_requests': total_requests,
+            'gemini': {
+                'success': self.stats['gemini_success'],
+                'failures': self.stats['gemini_failures'],
+                'rate': self.stats['gemini_success'] / max(1, self.stats['gemini_success'] + self.stats['gemini_failures']) * 100
+            },
+            'local': {
+                'success': self.stats['local_success'],
+                'failures': self.stats['local_failures'],
+                'rate': self.stats['local_success'] / max(1, self.stats['local_success'] + self.stats['local_failures']) * 100
+            }
+        }
+    
+    def print_statistics(self):
+        """Print usage statistics"""
+        stats = self.get_statistics()
+        
+        print("\n" + "=" * 60)
+        print("📊 HYBRID VISION AGENT STATISTICS")
+        print("=" * 60)
+        print(f"Total requests: {stats['total_requests']}")
+        print(f"\n⚡ Gemini API:")
+        print(f"   Success: {stats['gemini']['success']}")
+        print(f"   Failures: {stats['gemini']['failures']}")
+        print(f"   Success rate: {stats['gemini']['rate']:.1f}%")
+        print(f"\n🖥️  Local Qwen3-VL:")
+        print(f"   Success: {stats['local']['success']}")
+        print(f"   Failures: {stats['local']['failures']}")
+        print(f"   Success rate: {stats['local']['rate']:.1f}%")
+        print("=" * 60)
     
     def unload_model(self):
         """
-        Unload model from memory to free VRAM
+        Unload local model from memory to free VRAM
         """
-        if not self.model_loaded:
-            print("⚠️  Model not loaded")
+        if not self.local_model_loaded:
+            print("⚠️  Local model not loaded")
             return
         
         try:
-            print("\n🔄 Unloading model...")
+            print("\n🔄 Unloading local model...")
             
             # Delete model and processor
-            del self.model
+            del self.local_model
             del self.processor
             
             # Clear CUDA cache
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             
-            self.model = None
+            self.local_model = None
             self.processor = None
-            self.model_loaded = False
+            self.local_model_loaded = False
             
-            print("✅ Model unloaded, VRAM freed")
+            print("✅ Local model unloaded, VRAM freed")
             
         except Exception as e:
             print(f"⚠️  Error unloading model: {e}")
@@ -336,28 +519,27 @@ if __name__ == "__main__":
     import os
     
     print("=" * 70)
-    print("VISION AGENT TEST - System 2")
-    print("Vision-based element finding with Qwen3-VL-4B")
+    print("HYBRID VISION AGENT TEST - System 2")
+    print("Primary: Gemini 2.0 Flash | Fallback: Qwen3-VL-4B")
     print("=" * 70)
     
     # Configuration
     print("\n📋 Configuration:")
     
-    # Ask for model path
-    default_path = r"C:\Models\Qwen3-VL-4B"  # Update this default
-    model_path = r"C:\Users\devan\Desktop\Major Project\WebCane_1.0\My_Local_Models\Qwen3-VL-4B"
+    # Setup
+    LOCAL_MODEL_PATH = r"C:\Users\devan\Desktop\Major Project\WebCane_1.0\My_Local_Models\Qwen3-VL-4B"
+    GEMINI_API_KEY = "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc"  # Replace or use env var
     
-    if not model_path:
-        model_path = default_path
-    
-    if not os.path.exists(model_path):
-        print(f"\n⚠️  Warning: Model path does not exist: {model_path}")
-        print("   Continuing anyway (will fail if incorrect)...")
+    if GEMINI_API_KEY == "AIzaSyCDL65WW1C6KMsKt8F42NI5bdMC0NZy6Oc":
+        GEMINI_API_KEY = None  # Will check env var
     
     # Initialize components
     extractor = DOMExtractor()
     annotator = SoMAnnotator()
-    vision_agent = VisionAgent(model_path)
+    vision_agent = VisionAgent(
+        local_model_path=LOCAL_MODEL_PATH,
+        gemini_api_key=GEMINI_API_KEY
+    )
     
     try:
         # User input
@@ -407,47 +589,50 @@ if __name__ == "__main__":
         
         # Create annotated image
         print("\n🎨 Creating SoM-annotated screenshot...")
-        annotated_img, _ = annotator.filter_and_annotate(
+        annotated_img, filtered_elements = annotator.filter_and_annotate(
             screenshot,
             elements,
-            max_elements=15  # Limit for cleaner vision analysis
+            max_elements=15
         )
         
         # Save annotated image
-        annotated_path = "test_som_annotated.png"
+        annotated_path = "test_hybrid_som_annotated.png"
         with open(annotated_path, 'wb') as f:
             f.write(annotated_img)
         
         print(f"✅ Saved annotated screenshot: {annotated_path}")
         
-        # Run System 2 analysis
+        # Run Hybrid System 2 analysis
         print("\n" + "=" * 70)
-        print("🤖 SYSTEM 2: Vision Analysis")
+        print("🤖 HYBRID SYSTEM 2: Vision Analysis")
         print("=" * 70)
         print(f"Task: '{task}'")
         
-        element_id = vision_agent.find_element_by_vision(
+        element_idx = vision_agent.find_element_by_vision(
             annotated_path,
-            elements,
+            filtered_elements,
             task
         )
         
         print("\n" + "=" * 70)
         
-        if element_id >= 0:
-            element = elements[element_id]
+        if element_idx >= 0:
+            element = filtered_elements[element_idx]
+            real_id = element['id']
             
             print("✅ SYSTEM 2 SUCCESS!")
             print("=" * 70)
-            print(f"\n🎯 Vision Model Selected Element [{element_id}]:")
-            print(f"   Tag:      {element['tag']}")
-            print(f"   Type:     {element['type']}")
-            print(f"   Text:     {element['text'][:60] if element['text'] else '(no text)'}")
-            print(f"   Position: ({element['bbox']['x']}, {element['bbox']['y']})")
-            print(f"   Size:     {element['bbox']['w']}x{element['bbox']['h']}")
+            print(f"\n🎯 Vision Model Selected Element:")
+            print(f"   Box Index: {element_idx}")
+            print(f"   Real ID:   {real_id}")
+            print(f"   Tag:       {element['tag']}")
+            print(f"   Type:      {element['type']}")
+            print(f"   Text:      {element['text'][:60] if element['text'] else '(no text)'}")
+            print(f"   Position:  ({element['bbox']['x']}, {element['bbox']['y']})")
+            print(f"   Size:      {element['bbox']['w']}x{element['bbox']['h']}")
             
             if element['html_id']:
-                print(f"   HTML ID:  {element['html_id']}")
+                print(f"   HTML ID:   {element['html_id']}")
             
             # Optional click
             print("\n" + "=" * 70)
@@ -455,7 +640,7 @@ if __name__ == "__main__":
             
             if click_choice == 'y':
                 print("\n🖱️  Clicking element...")
-                if extractor.click_by_id(element_id, elements):
+                if extractor.click_by_id(real_id, elements):
                     print("✅ Click executed successfully!")
                     print("   Waiting 2 seconds to see result...")
                     import time
@@ -467,12 +652,15 @@ if __name__ == "__main__":
             print("❌ SYSTEM 2 FAILED")
             print("=" * 70)
             print("\n📊 Analysis:")
-            print(f"   - Vision model could not identify element for: '{task}'")
+            print(f"   - Vision models could not identify element for: '{task}'")
             print(f"   - Annotated screenshot: {annotated_path}")
             print("\n💡 Suggestions:")
             print("   - Check if element is visible in screenshot")
             print("   - Try more descriptive visual task")
             print("   - Verify SoM annotations are correct")
+        
+        # Show statistics
+        vision_agent.print_statistics()
         
         print("\n" + "=" * 70)
         input("⏸️  Press Enter to close browser...")
