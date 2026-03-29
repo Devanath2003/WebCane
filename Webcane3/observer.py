@@ -1,23 +1,23 @@
 """
 Observer agent for WebCane3 ReAct workflow.
-Provides action-oriented page analysis using Groq Vision model.
+Provides action-oriented page analysis using NVIDIA Vision API.
 """
 
 import os
+import io
 import time
 import base64
 import json
+import requests
 from typing import Optional, Dict, List
 
-from .config import Config
-
-# Groq imports
 try:
-    from groq import Groq
-    GROQ_AVAILABLE = True
+    from PIL import Image
+    PIL_AVAILABLE = True
 except ImportError:
-    GROQ_AVAILABLE = False
-    print("[Observer] groq not installed. Run: pip install groq")
+    PIL_AVAILABLE = False
+
+from .config import Config
 
 
 class Observer:
@@ -36,26 +36,22 @@ class Observer:
         Initialize the observer.
         
         Args:
-            api_key: Groq API key (uses GROQ_API_KEY3 from config)
+            api_key: NVIDIA API key (uses NVIDIA_API_KEY from config)
         """
-        self.client = None
-        self.model_name = Config.GROQ_OBSERVER_MODEL
+        self.api_key = None
+        self.model_name = Config.NVIDIA_OBSERVER_MODEL
+        self.api_url = Config.NVIDIA_VISION_URL
         self.available = False
         self.last_observation = None
         
-        if not GROQ_AVAILABLE:
-            print("[Observer] Groq SDK not available")
-            return
-        
         try:
-            api_key = api_key or Config.GROQ_API_KEY3
-            if not api_key:
-                print("[Observer] No Groq API key (GROQ_API_KEY3) provided")
+            self.api_key = api_key or Config.NVIDIA_API_KEY
+            if not self.api_key:
+                print("[Observer] No NVIDIA API key (NVIDIA_API_KEY) provided")
                 return
             
-            self.client = Groq(api_key=api_key)
             self.available = True
-            print(f"[Observer] Ready ({self.model_name})")
+            print(f"[Observer] Ready ({self.model_name}) via NVIDIA API")
             
         except Exception as e:
             print(f"[Observer] Setup failed: {e}")
@@ -77,6 +73,34 @@ class Observer:
             print(f"[Observer] Observation saved to last_observation.json")
         except Exception as e:
             print(f"[Observer] Failed to save observation: {e}")
+    
+    def _compress_image(self, screenshot_bytes: bytes, max_size: int = 1024, quality: int = 60) -> str:
+        """
+        Compress screenshot to JPEG and resize to fit NVIDIA API context limits.
+        Returns base64-encoded JPEG string.
+        """
+        if PIL_AVAILABLE:
+            try:
+                img = Image.open(io.BytesIO(screenshot_bytes))
+                # Resize if larger than max_size
+                w, h = img.size
+                if w > max_size or h > max_size:
+                    ratio = min(max_size / w, max_size / h)
+                    img = img.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+                # Convert to RGB (JPEG doesn't support alpha)
+                if img.mode in ('RGBA', 'P'):
+                    img = img.convert('RGB')
+                # Save as JPEG
+                buf = io.BytesIO()
+                img.save(buf, format='JPEG', quality=quality)
+                b64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+                print(f"[Observer] Compressed image: {len(screenshot_bytes)} bytes -> {len(buf.getvalue())} bytes (JPEG q={quality})")
+                return b64, "jpeg"
+            except Exception as e:
+                print(f"[Observer] Compression failed, using raw PNG: {e}")
+        
+        # Fallback: use raw PNG
+        return base64.b64encode(screenshot_bytes).decode('utf-8'), "png"
     
     def analyze_for_action(
         self,
@@ -121,8 +145,8 @@ class Observer:
             # Rate limiting
             time.sleep(Config.API_DELAY)
             
-            # Encode screenshot
-            b64_image = base64.b64encode(screenshot_bytes).decode('utf-8')
+            # Encode and compress screenshot
+            b64_image, img_format = self._compress_image(screenshot_bytes)
             
             # Build context about last action
             last_action_context = ""
@@ -204,25 +228,55 @@ Example response:
 
 Respond with ONLY the JSON object, no other text."""
 
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=[
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "model": self.model_name,
+                "messages": [
                     {
                         "role": "user",
                         "content": [
                             {"type": "text", "text": prompt},
-                            {
-                                "type": "image_url",
-                                "image_url": {"url": f"data:image/png;base64,{b64_image}"}
-                            }
+                            {"type": "image_url", "image_url": {"url": f"data:image/{img_format};base64,{b64_image}"}}
                         ]
                     }
                 ],
-                max_tokens=800,
-                temperature=0.2
-            )
+                "max_tokens": 800,
+                "temperature": 0.2,
+                "top_p": 0.7,
+                "stream": False,
+                "chat_template_kwargs": {"thinking": False}
+            }
             
-            result_text = response.choices[0].message.content.strip()
+            # Retry logic for NVIDIA free tier timeouts
+            response = None
+            for attempt in range(2):
+                try:
+                    timeout = 90 if attempt == 0 else 120
+                    response = requests.post(self.api_url, headers=headers, json=payload, timeout=timeout)
+                    break  # Success, exit retry loop
+                except requests.exceptions.ReadTimeout:
+                    if attempt == 0:
+                        print(f"[Observer] NVIDIA API timeout ({timeout}s), retrying in 3s...")
+                        time.sleep(3)
+                    else:
+                        print(f"[Observer] NVIDIA API timeout on retry, giving up")
+                        raise
+                except requests.exceptions.ConnectionError as e:
+                    print(f"[Observer] NVIDIA API connection error: {e}")
+                    raise
+            
+            if response.status_code != 200:
+                print(f"[Observer] NVIDIA API error {response.status_code}: {response.text[:500]}")
+                response.raise_for_status()
+            
+            result_data = response.json()
+            
+            result_text = result_data["choices"][0]["message"]["content"].strip()
             
             # Try to parse JSON
             try:
@@ -310,7 +364,7 @@ Respond with ONLY the JSON object, no other text."""
         
         try:
             time.sleep(Config.API_DELAY)
-            b64_image = base64.b64encode(screenshot_bytes).decode('utf-8')
+            b64_image, img_format = self._compress_image(screenshot_bytes)
             
             prompt = """Describe this webpage screenshot in detail.
 Focus on:
@@ -321,25 +375,51 @@ Focus on:
 
 Be comprehensive (3-5 sentences)."""
             
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=[
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "model": self.model_name,
+                "messages": [
                     {
                         "role": "user",
                         "content": [
                             {"type": "text", "text": prompt},
-                            {
-                                "type": "image_url",
-                                "image_url": {"url": f"data:image/png;base64,{b64_image}"}
-                            }
+                            {"type": "image_url", "image_url": {"url": f"data:image/{img_format};base64,{b64_image}"}}
                         ]
                     }
                 ],
-                max_tokens=400,
-                temperature=0.2
-            )
+                "max_tokens": 400,
+                "temperature": 0.2,
+                "top_p": 0.7,
+                "stream": False,
+                "chat_template_kwargs": {"thinking": False}
+            }
             
-            description = response.choices[0].message.content.strip()
+            # Retry logic for NVIDIA free tier timeouts
+            response = None
+            for attempt in range(2):
+                try:
+                    timeout = 90 if attempt == 0 else 120
+                    response = requests.post(self.api_url, headers=headers, json=payload, timeout=timeout)
+                    break
+                except requests.exceptions.ReadTimeout:
+                    if attempt == 0:
+                        print(f"[Observer] describe_page timeout ({timeout}s), retrying...")
+                        time.sleep(3)
+                    else:
+                        raise
+            
+            if response.status_code != 200:
+                print(f"[Observer] NVIDIA API error {response.status_code}: {response.text[:500]}")
+                response.raise_for_status()
+            
+            result_data = response.json()
+            
+            description = result_data["choices"][0]["message"]["content"].strip()
             return description
             
         except Exception as e:

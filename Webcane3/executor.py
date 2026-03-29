@@ -940,14 +940,32 @@ If no element matches, write: ANSWER: -1"""
                 ],
                 "max_tokens": 1000,
                 "temperature": 0.1,
-                "stream": False
+                "stream": False,
+                "chat_template_kwargs": {"thinking": False}
             }
             
             print("[Executor] NVIDIA Vision: Calling API...")
-            response = requests.post(Config.NVIDIA_VISION_URL, headers=headers, json=payload, timeout=30)
             
-            if response.status_code != 200:
-                print(f"[Executor] NVIDIA Vision error: {response.status_code}")
+            # Retry logic for NVIDIA free tier timeouts
+            response = None
+            for attempt in range(2):
+                try:
+                    timeout = 90 if attempt == 0 else 120
+                    response = requests.post(Config.NVIDIA_VISION_URL, headers=headers, json=payload, timeout=timeout)
+                    break  # Success, exit retry loop
+                except requests.exceptions.ReadTimeout:
+                    if attempt == 0:
+                        print(f"[Executor] NVIDIA Vision: Timeout ({timeout}s), retrying in 3s...")
+                        time.sleep(3)
+                    else:
+                        print(f"[Executor] NVIDIA Vision: Timeout on retry, giving up")
+                        return -1
+                except requests.exceptions.ConnectionError as e:
+                    print(f"[Executor] NVIDIA Vision: Connection error: {e}")
+                    return -1
+            
+            if response is None or response.status_code != 200:
+                print(f"[Executor] NVIDIA Vision error: {response.status_code if response else 'No response'}")
                 return -1
             
             result_json = response.json()

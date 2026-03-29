@@ -1,0 +1,25 @@
+# WebCane3 - Dependencies
+# Core
+langchain
+langgraph
+python-dotenv
+
+# APIs
+google-genai
+groq
+openai
+
+# Browser automation
+playwright
+
+# Voice (accessibility)
+sounddevice
+soundfile
+pygame
+nvidia-riva-client
+
+# Web UI
+flask
+flask-socketio
+gevent
+gevent-websocket

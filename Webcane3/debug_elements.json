@@ -2,141 +2,1065 @@
   {
     "id": 0,
     "tag": "button",
-    "text": "Open Menu",
-    "type": "button",
+    "text": "Guide",
+    "type": "submit",
     "bbox": {
-      "x": 20,
-      "y": 20,
-      "w": 20,
-      "h": 20
+      "x": 24,
+      "y": 16,
+      "w": 24,
+      "h": 24
     },
-    "html_id": "react-burger-menu-btn",
-    "html_classes": ""
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button"
   },
   {
     "id": 1,
     "tag": "button",
-    "text": "Back to products",
+    "text": "Clear search query",
     "type": "submit",
     "bbox": {
-      "x": 20,
-      "y": 69,
-      "w": 169,
-      "h": 32
-    },
-    "html_id": "back-to-products",
-    "html_classes": "btn btn_secondary back btn_large inventory_details_back_button"
-  },
-  {
-    "id": 2,
-    "tag": "button",
-    "text": "Add to cart",
-    "type": "submit",
-    "bbox": {
-      "x": 610,
-      "y": 379,
-      "w": 160,
-      "h": 34
-    },
-    "html_id": "add-to-cart",
-    "html_classes": "btn btn_primary btn_small btn_inventory"
-  },
-  {
-    "id": 3,
-    "tag": "a",
-    "text": "",
-    "type": null,
-    "bbox": {
-      "x": 1365,
-      "y": 10,
+      "x": 894,
+      "y": 8,
       "w": 40,
       "h": 40
     },
     "html_id": "",
-    "html_classes": "shopping_cart_link"
+    "html_classes": "ytSearchboxComponentClearButton"
+  },
+  {
+    "id": 2,
+    "tag": "button",
+    "text": "Search",
+    "type": "submit",
+    "bbox": {
+      "x": 930,
+      "y": 8,
+      "w": 64,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "ytSearchboxComponentSearchButton"
+  },
+  {
+    "id": 3,
+    "tag": "button",
+    "text": "Search with your voice",
+    "type": "submit",
+    "bbox": {
+      "x": 1010,
+      "y": 8,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-only-default yt-spec-button-shape-next--enable-backdrop-filter-experiment"
   },
   {
     "id": 4,
-    "tag": "a",
-    "text": "Twitter",
-    "type": null,
+    "tag": "button",
+    "text": "Settings",
+    "type": "submit",
     "bbox": {
-      "x": 50,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 1271,
+      "y": 16,
+      "w": 24,
+      "h": 24
     },
-    "html_id": "",
-    "html_classes": ""
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button"
   },
   {
     "id": 5,
-    "tag": "a",
-    "text": "Facebook",
-    "type": null,
+    "tag": "button",
+    "text": "All",
+    "type": "submit",
     "bbox": {
-      "x": 100,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 264,
+      "y": 67,
+      "w": 40,
+      "h": 32
     },
     "html_id": "",
-    "html_classes": ""
+    "html_classes": "ytChipShapeButtonReset"
   },
   {
     "id": 6,
+    "tag": "button",
+    "text": "Shorts",
+    "type": "submit",
+    "bbox": {
+      "x": 312,
+      "y": 67,
+      "w": 65,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 7,
+    "tag": "button",
+    "text": "Videos",
+    "type": "submit",
+    "bbox": {
+      "x": 386,
+      "y": 67,
+      "w": 67,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 8,
+    "tag": "button",
+    "text": "Unwatched",
+    "type": "submit",
+    "bbox": {
+      "x": 461,
+      "y": 67,
+      "w": 94,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 9,
+    "tag": "button",
+    "text": "Watched",
+    "type": "submit",
+    "bbox": {
+      "x": 563,
+      "y": 67,
+      "w": 79,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 10,
+    "tag": "button",
+    "text": "Recently uploaded",
+    "type": "submit",
+    "bbox": {
+      "x": 650,
+      "y": 67,
+      "w": 139,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 11,
+    "tag": "button",
+    "text": "Live",
+    "type": "submit",
+    "bbox": {
+      "x": 797,
+      "y": 67,
+      "w": 49,
+      "h": 32
+    },
+    "html_id": "",
+    "html_classes": "ytChipShapeButtonReset"
+  },
+  {
+    "id": 12,
+    "tag": "button",
+    "text": "Search filters",
+    "type": "submit",
+    "bbox": {
+      "x": 1306,
+      "y": 66,
+      "w": 95,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-trailing yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 13,
+    "tag": "button",
+    "text": "",
+    "type": "submit",
+    "bbox": {
+      "x": 716,
+      "y": 361,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--overlay-dark yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-only-default yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 14,
+    "tag": "button",
+    "text": "My Ad Center",
+    "type": "submit",
+    "bbox": {
+      "x": 1375,
+      "y": 122,
+      "w": 36,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-button yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 15,
+    "tag": "button",
+    "text": "Action menu",
+    "type": "submit",
+    "bbox": {
+      "x": 1361,
+      "y": 417,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button"
+  },
+  {
+    "id": 16,
+    "tag": "button",
+    "text": "Action menu",
+    "type": "submit",
+    "bbox": {
+      "x": 1361,
+      "y": 713,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "button",
+    "html_classes": "style-scope yt-icon-button"
+  },
+  {
+    "id": 17,
+    "tag": "button",
+    "text": "Unmute",
+    "type": "submit",
+    "bbox": {
+      "x": 712,
+      "y": 132,
+      "w": 48,
+      "h": 48
+    },
+    "html_id": "",
+    "html_classes": "ytmMuteButtonButton"
+  },
+  {
+    "id": 18,
+    "tag": "button",
+    "text": "Subtitles/CC turned on",
+    "type": "submit",
+    "bbox": {
+      "x": 712,
+      "y": 180,
+      "w": 48,
+      "h": 48
+    },
+    "html_id": "",
+    "html_classes": "ytmClosedCaptioningButtonButton"
+  },
+  {
+    "id": 19,
     "tag": "a",
-    "text": "LinkedIn",
+    "text": "YouTube Home",
     "type": null,
     "bbox": {
-      "x": 150,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 56,
+      "y": 0,
+      "w": 123,
+      "h": 56
+    },
+    "html_id": "logo",
+    "html_classes": "yt-simple-endpoint style-scope ytd-topbar-logo-renderer"
+  },
+  {
+    "id": 20,
+    "tag": "a",
+    "text": "",
+    "type": null,
+    "bbox": {
+      "x": 1263,
+      "y": 8,
+      "w": 40,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "yt-simple-endpoint style-scope ytd-topbar-menu-button-renderer"
+  },
+  {
+    "id": 21,
+    "tag": "a",
+    "text": "Sign in",
+    "type": null,
+    "bbox": {
+      "x": 1311,
+      "y": 10,
+      "w": 98,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--outline yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 22,
+    "tag": "a",
+    "text": "Home",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 68,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 23,
+    "tag": "a",
+    "text": "Shorts",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 108,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 24,
+    "tag": "a",
+    "text": "Subscriptions",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 148,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 25,
+    "tag": "a",
+    "text": "You",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 188,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 26,
+    "tag": "a",
+    "text": "History",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 228,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 27,
+    "tag": "a",
+    "text": "Sign in",
+    "type": null,
+    "bbox": {
+      "x": 32,
+      "y": 349,
+      "w": 98,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--outline yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 28,
+    "tag": "a",
+    "text": "Shopping",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 446,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 29,
+    "tag": "a",
+    "text": "Music",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 486,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 30,
+    "tag": "a",
+    "text": "Movies",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 526,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 31,
+    "tag": "a",
+    "text": "Show more",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 32,
+    "tag": "a",
+    "text": "YouTube Premium",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 662,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 33,
+    "tag": "a",
+    "text": "YouTube Music",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 702,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 34,
+    "tag": "a",
+    "text": "YouTube Kids",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 742,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 35,
+    "tag": "a",
+    "text": "Report history",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 807,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "endpoint",
+    "html_classes": "yt-simple-endpoint style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 36,
+    "tag": "a",
+    "text": "About",
+    "type": null,
+    "bbox": {
+      "x": 24,
+      "y": 876,
+      "w": 35,
+      "h": 18
     },
     "html_id": "",
     "html_classes": ""
   },
   {
-    "id": 7,
-    "tag": "li",
-    "text": "Twitter",
+    "id": 37,
+    "tag": "a",
+    "text": "Press",
     "type": null,
     "bbox": {
-      "x": 50,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 67,
+      "y": 876,
+      "w": 33,
+      "h": 18
     },
     "html_id": "",
-    "html_classes": "social_twitter"
+    "html_classes": ""
   },
   {
-    "id": 8,
-    "tag": "li",
-    "text": "Facebook",
+    "id": 38,
+    "tag": "a",
+    "text": "Copyright",
     "type": null,
     "bbox": {
-      "x": 100,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 108,
+      "y": 876,
+      "w": 56,
+      "h": 18
     },
     "html_id": "",
-    "html_classes": "social_facebook"
+    "html_classes": ""
   },
   {
-    "id": 9,
-    "tag": "li",
-    "text": "LinkedIn",
+    "id": 39,
+    "tag": "a",
+    "text": "Contact us",
     "type": null,
     "bbox": {
-      "x": 150,
-      "y": 847,
-      "w": 30,
-      "h": 30
+      "x": 24,
+      "y": 894,
+      "w": 63,
+      "h": 18
     },
     "html_id": "",
-    "html_classes": "social_linkedin"
+    "html_classes": ""
+  },
+  {
+    "id": 40,
+    "tag": "a",
+    "text": "Creators",
+    "type": null,
+    "bbox": {
+      "x": 95,
+      "y": 894,
+      "w": 50,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 41,
+    "tag": "a",
+    "text": "Advertise",
+    "type": null,
+    "bbox": {
+      "x": 152,
+      "y": 894,
+      "w": 55,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": ""
+  },
+  {
+    "id": 42,
+    "tag": "a",
+    "text": "",
+    "type": null,
+    "bbox": {
+      "x": 264,
+      "y": 128,
+      "w": 516,
+      "h": 281
+    },
+    "html_id": "",
+    "html_classes": "yt-lockup-view-model__content-image"
+  },
+  {
+    "id": 43,
+    "tag": "a",
+    "text": "Smooth-sailing through 20+ apps with Creative Cloud Pro.",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 130,
+      "w": 461,
+      "h": 22
+    },
+    "html_id": "",
+    "html_classes": "yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color"
+  },
+  {
+    "id": 44,
+    "tag": "a",
+    "text": "Smooth-sailing through 20+ apps with Creative Cloud Pro.",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 130,
+      "w": 461,
+      "h": 22
+    },
+    "html_id": "",
+    "html_classes": "yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color"
+  },
+  {
+    "id": 45,
+    "tag": "a",
+    "text": "Nisha works seamlessly between Photoshop and Illustrator on her branding projects.",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 160,
+      "w": 451,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": "yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color"
+  },
+  {
+    "id": 46,
+    "tag": "a",
+    "text": "Nisha works seamlessly between Photoshop and Illustrator on her branding projects.",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 160,
+      "w": 451,
+      "h": 14
+    },
+    "html_id": "",
+    "html_classes": "yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color"
+  },
+  {
+    "id": 47,
+    "tag": "a",
+    "text": "Watch",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 220,
+      "w": 149,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 48,
+    "tag": "a",
+    "text": "Learn more",
+    "type": null,
+    "bbox": {
+      "x": 941,
+      "y": 220,
+      "w": 149,
+      "h": 36
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--enable-backdrop-filter-experiment"
+  },
+  {
+    "id": 49,
+    "tag": "a",
+    "text": "11:55:00 Now playing",
+    "type": null,
+    "bbox": {
+      "x": 264,
+      "y": 428,
+      "w": 500,
+      "h": 281
+    },
+    "html_id": "thumbnail",
+    "html_classes": "yt-simple-endpoint inline-block style-scope ytd-thumbnail"
+  },
+  {
+    "id": 50,
+    "tag": "a",
+    "text": "Incredible Animals in 4K HDR | Ultra-Smooth Dolby Vision OLED Demo for 4K TVs 11 hours, 55 minutes",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 428,
+      "w": 573,
+      "h": 52
+    },
+    "html_id": "video-title",
+    "html_classes": "yt-simple-endpoint style-scope ytd-video-renderer"
+  },
+  {
+    "id": 51,
+    "tag": "a",
+    "text": "Go to channel 12K UHD WORLD",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 510,
+      "w": 32,
+      "h": 26
+    },
+    "html_id": "channel-thumbnail",
+    "html_classes": "style-scope ytd-video-renderer"
+  },
+  {
+    "id": 52,
+    "tag": "a",
+    "text": "12K UHD WORLD",
+    "type": null,
+    "bbox": {
+      "x": 812,
+      "y": 514,
+      "w": 92,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "yt-simple-endpoint style-scope yt-formatted-string"
+  },
+  {
+    "id": 53,
+    "tag": "a",
+    "text": "30:42 Now playing",
+    "type": null,
+    "bbox": {
+      "x": 264,
+      "y": 724,
+      "w": 500,
+      "h": 281
+    },
+    "html_id": "thumbnail",
+    "html_classes": "yt-simple-endpoint inline-block style-scope ytd-thumbnail"
+  },
+  {
+    "id": 54,
+    "tag": "a",
+    "text": "Epic Nature OLED TEST Dolby Vision | 16K Video HDR 120fps (8K/4K TV) 30 minutes",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 724,
+      "w": 573,
+      "h": 52
+    },
+    "html_id": "video-title",
+    "html_classes": "yt-simple-endpoint style-scope ytd-video-renderer"
+  },
+  {
+    "id": 55,
+    "tag": "a",
+    "text": "Go to channel 8K Video ULTRA HD",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 806,
+      "w": 32,
+      "h": 26
+    },
+    "html_id": "channel-thumbnail",
+    "html_classes": "style-scope ytd-video-renderer"
+  },
+  {
+    "id": 56,
+    "tag": "a",
+    "text": "8K Video ULTRA HD",
+    "type": null,
+    "bbox": {
+      "x": 812,
+      "y": 810,
+      "w": 105,
+      "h": 18
+    },
+    "html_id": "",
+    "html_classes": "yt-simple-endpoint style-scope yt-formatted-string"
+  },
+  {
+    "id": 57,
+    "tag": "a",
+    "text": "",
+    "type": null,
+    "bbox": {
+      "x": 264,
+      "y": 128,
+      "w": 500,
+      "h": 282
+    },
+    "html_id": "thumbnail",
+    "html_classes": "yt-simple-endpoint inline-block style-scope ytd-thumbnail"
+  },
+  {
+    "id": 58,
+    "tag": "input",
+    "text": "Search",
+    "type": "text",
+    "bbox": {
+      "x": 411,
+      "y": 16,
+      "w": 491,
+      "h": 24
+    },
+    "html_id": "",
+    "html_classes": "ytSearchboxComponentInput yt-searchbox-input title"
+  },
+  {
+    "id": 59,
+    "tag": "ytd-guide-entry-renderer",
+    "text": "Show more",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "expander-item",
+    "html_classes": "style-scope ytd-guide-collapsible-entry-renderer"
+  },
+  {
+    "id": 60,
+    "tag": "div",
+    "text": "Adobe Creative Cloud Media",
+    "type": null,
+    "bbox": {
+      "x": 780,
+      "y": 184,
+      "w": 24,
+      "h": 24
+    },
+    "html_id": "",
+    "html_classes": "yt-spec-avatar-shape yt-spec-avatar-shape__button yt-spec-avatar-shape__button--button-extra-small yt-spec-avatar-shape__button--tappable"
+  },
+  {
+    "id": 61,
+    "tag": "tp-yt-paper-item",
+    "text": "Home",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 68,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 62,
+    "tag": "tp-yt-paper-item",
+    "text": "Shorts",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 108,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 63,
+    "tag": "tp-yt-paper-item",
+    "text": "Subscriptions",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 148,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 64,
+    "tag": "tp-yt-paper-item",
+    "text": "You",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 188,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 65,
+    "tag": "tp-yt-paper-item",
+    "text": "History",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 228,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 66,
+    "tag": "tp-yt-paper-item",
+    "text": "Shopping",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 446,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 67,
+    "tag": "tp-yt-paper-item",
+    "text": "Music",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 486,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 68,
+    "tag": "tp-yt-paper-item",
+    "text": "Movies",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 526,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 69,
+    "tag": "tp-yt-paper-item",
+    "text": "Show more",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 566,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 70,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Premium",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 662,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 71,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Music",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 702,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 72,
+    "tag": "tp-yt-paper-item",
+    "text": "YouTube Kids",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 742,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 73,
+    "tag": "tp-yt-paper-item",
+    "text": "Report history",
+    "type": null,
+    "bbox": {
+      "x": 12,
+      "y": 807,
+      "w": 204,
+      "h": 40
+    },
+    "html_id": "",
+    "html_classes": "style-scope ytd-guide-entry-renderer"
+  },
+  {
+    "id": 74,
+    "tag": "div",
+    "text": "YouTube Video Player",
+    "type": null,
+    "bbox": {
+      "x": 262,
+      "y": 127,
+      "w": 504,
+      "h": 284
+    },
+    "html_id": "inline-preview-player",
+    "html_classes": "html5-video-player ytp-hide-controls ytp-exp-bottom-control-flexbox ytp-modern-caption ytp-exp-ppp-update ytp-livebadge-color ytp-delhi-modern-compact-controls ad-created ytp-delhi-modern ytp-delhi-modern-icons ytp-delhi-horizontal-volume-controls ytp-fit-cover-video ytp-cards-teaser-dismissible ytp-hide-info-bar ytp-xsmall-width-mode ytp-autonav-endscreen-cancelled-state playing-mode"
+  },
+  {
+    "id": 75,
+    "tag": "video",
+    "text": "",
+    "type": null,
+    "bbox": {
+      "x": 262,
+      "y": 127,
+      "w": 504,
+      "h": 284
+    },
+    "html_id": "",
+    "html_classes": "video-stream html5-main-video"
   }
 ]

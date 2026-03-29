@@ -29,7 +29,7 @@ class Config:
     
     # Model Names - NVIDIA API
     # Model Names - NVIDIA API
-    NVIDIA_VISION_MODEL: str = "mistralai/mistral-large-3-675b-instruct-2512"
+    NVIDIA_VISION_MODEL: str = "moonshotai/kimi-k2.5"
     NVIDIA_SUPERVISOR_MODEL: str = "deepseek-ai/deepseek-v3.1-terminus"  # Default
     GROQ_SUPERVISOR_MODEL: str = "openai/gpt-oss-120b"                   # Alternative
     NVIDIA_SUPERVISOR_MODEL: str = "deepseek-ai/deepseek-v3.1-terminus"    # ReAct Supervisor with thinking
@@ -38,7 +38,8 @@ class Config:
     
     # Model Names - Groq
     GROQ_DOM_MODEL: str = "openai/gpt-oss-120b"                # DOM Text Agent
-    GROQ_OBSERVER_MODEL: str = "meta-llama/llama-4-maverick-17b-128e-instruct"  # Observer
+    GROQ_OBSERVER_MODEL: str = "meta-llama/llama-4-scout-17b-16e-instruct"  # Observer (legacy/fallback)
+    NVIDIA_OBSERVER_MODEL: str = "moonshotai/kimi-k2.5"  # Observer (NVIDIA)
     
     # Voice Models (Groq) - Accessibility
     GROQ_STT_MODEL: str = "whisper-large-v3-turbo"             # Speech-to-Text
@@ -52,8 +53,8 @@ class Config:
     QWEN_MODEL_PATH: str = r"C:\Users\devan\Desktop\Major Project\WebCane_1.0\My_Local_Models\Qwen3-VL-4B"
     
     # Timeouts (seconds)
-    API_TIMEOUT: int = 30
-    OBSERVATION_TIMEOUT: int = 15
+    API_TIMEOUT: int = 90
+    OBSERVATION_TIMEOUT: int = 30
     API_DELAY: float = 0.5  # Delay between API calls to avoid rate limiting
     
     # ReAct Loop Settings

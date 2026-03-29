@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCane3 — ReAct Web Automation</title>
+    <meta name="description" content="WebCane3 - AI-powered web automation with ReAct architecture. Control browsers with natural language goals.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <style>
+        /* ======================== RESET & BASE ======================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d0a06;
+            --bg-secondary: #1a1308;
+            --bg-card: rgba(26, 19, 8, 0.75);
+            --bg-card-hover: rgba(38, 28, 12, 0.85);
+            --bg-glass: rgba(255, 200, 50, 0.04);
+            --border-subtle: rgba(245, 158, 11, 0.12);
+            --border-accent: rgba(245, 158, 11, 0.35);
+            --text-primary: #f5edd6;
+            --text-secondary: #bba97a;
+            --text-muted: #7a6c4e;
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.25);
+            --accent-hover: #fbbf24;
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.2);
+            --error: #ef4444;
+            --error-glow: rgba(239, 68, 68, 0.2);
+            --warning: #fb923c;
+            --console-bg: #0a0804;
+            --console-text: #c4b48a;
+            --console-accent: #f59e0b;
+            --gradient-1: linear-gradient(135deg, #f59e0b 0%, #f97316 50%, #ea580c 100%);
+            --gradient-2: linear-gradient(135deg, #0d0a06 0%, #1a1308 100%);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ======================== BACKGROUND ======================== */
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-pattern::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse 600px 600px at 20% 20%, rgba(245, 158, 11, 0.08), transparent),
+                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(249, 115, 22, 0.06), transparent),
+                radial-gradient(ellipse 400px 400px at 60% 30%, rgba(234, 88, 12, 0.05), transparent);
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -30px) rotate(1deg); }
+            66% { transform: translate(-15px, 20px) rotate(-1deg); }
+        }
+
+        /* ======================== LAYOUT ======================== */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ======================== HEADER ======================== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            margin-bottom: 24px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 100px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .status-badge[data-state="connected"] .status-dot { background: var(--warning); }
+        .status-badge[data-state="initializing"] .status-dot { background: var(--warning); animation: pulse 1.5s infinite; }
+        .status-badge[data-state="ready"] .status-dot { background: var(--success); box-shadow: 0 0 12px var(--success-glow); }
+        .status-badge[data-state="running"] .status-dot { background: var(--accent); animation: pulse 1s infinite; }
+        .status-badge[data-state="error"] .status-dot { background: var(--error); box-shadow: 0 0 12px var(--error-glow); }
+        .status-badge[data-state="stopping"] .status-dot { background: var(--warning); animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* ======================== MAIN GRID ======================== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        /* ======================== CARD ======================== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: var(--border-accent);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* ======================== SETUP PANEL ======================== */
+        .setup-panel {
+            grid-column: 1;
+            grid-row: 1 / 3;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            transition: var(--transition);
+            appearance: none;
+            outline: none;
+        }
+
+        .form-select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23bba97a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .form-select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .form-select:focus, .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ======================== BUTTONS ======================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px var(--accent-glow);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: rgba(16, 185, 129, 0.25);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        /* ======================== GOAL INPUT ======================== */
+        .goal-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .goal-input-wrapper {
+            position: relative;
+        }
+
+        .goal-input {
+            width: 100%;
+            padding: 14px 16px;
+            padding-right: 90px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            transition: var(--transition);
+            min-height: 80px;
+        }
+
+        .goal-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .goal-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .goal-btns-wrapper {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .goal-send-btn, .goal-mic-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .goal-send-btn {
+            background: var(--gradient-1);
+        }
+
+        .goal-mic-btn {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .goal-mic-btn.recording {
+            background: rgba(239, 68, 68, 0.3);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.5);
+            animation: micPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes micPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        }
+
+        .goal-send-btn:hover:not(:disabled),
+        .goal-mic-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .goal-send-btn:disabled, .goal-mic-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ======================== INPUT MODE INDICATOR ======================== */
+        .input-mode-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .input-mode-indicator .mode-icon {
+            font-size: 14px;
+        }
+
+        .voice-unsupported {
+            color: var(--error);
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.15);
+        }
+
+        /* ======================== DIVIDER ======================== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        /* ======================== RESULT PANEL ======================== */
+        .result-panel {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .result-item {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            transition: var(--transition);
+        }
+
+        .result-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .result-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .result-value.success { color: var(--success); }
+        .result-value.error { color: var(--error); }
+        .result-value.accent { color: var(--accent-hover); }
+
+        .result-value.url {
+            font-size: 13px;
+            font-weight: 500;
+            word-break: break-all;
+            color: var(--accent-hover);
+        }
+
+        .result-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* ======================== CONSOLE ======================== */
+        .console-panel {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console {
+            flex: 1;
+            min-height: 400px;
+            max-height: 600px;
+            background: var(--console-bg);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            overflow-y: auto;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--console-text);
+            /* NO scroll-behavior: smooth — that causes the infinite scroll loop */
+        }
+
+        .console::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .console::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .console::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.15);
+            border-radius: 3px;
+        }
+
+        .log-line {
+            padding: 2px 0;
+            animation: logFadeIn 0.2s ease-out;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .log-line.phase { color: var(--accent-hover); font-weight: 600; }
+        .log-line.success { color: var(--success); }
+        .log-line.error { color: var(--error); }
+        .log-line.separator { color: var(--text-muted); opacity: 0.4; }
+        .log-line.info { color: var(--text-secondary); }
+
+        @keyframes logFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .console-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .console-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .console-action-btn {
+            padding: 4px 10px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .console-action-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--border-accent);
+        }
+
+        /* ======================== RUNNING INDICATOR ======================== */
+        .running-dots {
+            display: none;
+            padding: 12px 0;
+            text-align: center;
+        }
+
+        .running-dots.visible {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .running-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .running-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .running-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ======================== HIDDEN STATE ======================== */
+        .hidden { display: none !important; }
+
+        /* ======================== RESPONSIVE ======================== */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            .setup-panel {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            .result-panel {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            .console-panel {
+                grid-column: 1;
+                grid-row: 3;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app-container { padding: 12px; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+            .header { flex-direction: column; gap: 12px; }
+        }
+
+        /* ======================== INFO CARDS ======================== */
+        .info-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .info-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ======================== SESSION BADGE ======================== */
+        .session-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .session-indicator.inactive {
+            background: rgba(187, 169, 122, 0.1);
+            border-color: rgba(187, 169, 122, 0.15);
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="app-container">
+
+        <!-- ==================== HEADER ==================== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">W3</div>
+                <div class="header-title">
+                    <h1>WebCane3</h1>
+                    <p>ReAct Web Automation Agent</p>
+                </div>
+            </div>
+            <div class="status-badge" id="statusBadge" data-state="disconnected">
+                <span class="status-dot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- ==================== MAIN GRID ==================== -->
+        <div class="main-grid">
+
+            <!-- ==================== SETUP / CONTROLS PANEL ==================== -->
+            <div class="card setup-panel">
+                <div class="card-header">
+                    <span class="card-title">⚙️ Controls</span>
+                    <span class="session-indicator inactive" id="sessionIndicator">No Session</span>
+                </div>
+                <div class="card-body">
+
+                    <!-- Model Selection -->
+                    <div class="form-group">
+                        <label for="modelSelect">Supervisor Model</label>
+                        <select id="modelSelect" class="form-select">
+                            <option value="deepseek">NVIDIA DeepSeek-V3.1 — Thinking Enabled</option>
+                            <option value="gpt-oss">Groq GPT-OSS-120b — Fast Inference</option>
+                        </select>
+                    </div>
+
+                    <!-- Execution Mode -->
+                    <div class="form-group">
+                        <label for="execMode">Execution Mode</label>
+                        <select id="execMode" class="form-select">
+                            <option value="hybrid">Hybrid (DOM + Vision Fallback)</option>
+                            <option value="vlm">VLM Only (Fine-tuned Qwen2-VL)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Mode (Voice / Text) -->
+                    <div class="form-group">
+                        <label for="inputMode">Input Mode</label>
+                        <select id="inputMode" class="form-select">
+                            <option value="text">🔤 Text Mode — Type your goals</option>
+                            <option value="voice">🎤 Voice Mode — Speak your goals</option>
+                        </select>
+                    </div>
+
+                    <!-- Session Buttons -->
+                    <div class="btn-group">
+                        <button id="btnStart" class="btn btn-primary" onclick="startSession()">
+                            ▶ Start Session
+                        </button>
+                        <button id="btnStop" class="btn btn-danger hidden" onclick="stopSession()">
+                            ■ Stop Session
+                        </button>
+                    </div>
+
+                    <!-- Goal Input (shown after session starts) -->
+                    <div class="goal-section hidden" id="goalSection">
+                        <div class="divider">Enter Goal</div>
+
+                        <div class="info-card">
+                            <span class="info-icon">💡</span>
+                            <span class="info-text">Describe what you want to do in natural language. For example: <strong>"Go to YouTube and search for cats"</strong></span>
+                        </div>
+
+                        <div class="goal-input-wrapper">
+                            <textarea
+                                id="goalInput"
+                                class="goal-input"
+                                placeholder="What should I do?"
+                                rows="3"
+                                onkeydown="handleGoalKeydown(event)"
+                            ></textarea>
+                            <div class="goal-btns-wrapper">
+                                <button class="goal-mic-btn hidden" id="goalMicBtn" onclick="toggleVoiceInput()" title="Voice Input">
+                                    🎤
+                                </button>
+                                <button class="goal-send-btn" id="goalSendBtn" onclick="executeGoal()" title="Execute Goal">
+                                    ➤
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Voice status indicator -->
+                        <div class="input-mode-indicator hidden" id="voiceIndicator">
+                            <span class="mode-icon">🎤</span>
+                            <span id="voiceStatusText">Voice mode active — click mic or press V to speak</span>
+                        </div>
+                    </div>
+
+                    <!-- History -->
+                    <div class="goal-section hidden" id="historySection">
+                        <div class="divider">History</div>
+                        <div id="historyList" style="max-height: 200px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== RESULTS PANEL ==================== -->
+            <div class="card result-panel">
+                <div class="card-header">
+                    <span class="card-title">📊 Last Result</span>
+                </div>
+                <div class="card-body">
+                    <div id="resultEmpty" class="result-empty">
+                        No results yet. Start a session and execute a goal.
+                    </div>
+                    <div id="resultsGrid" class="results-grid hidden">
+                        <div class="result-item">
+                            <div class="result-label">Status</div>
+                            <div class="result-value" id="resStatus">—</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Actions</div>
+                            <div class="result-value accent" id="resActions">—</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Successful</div>
+                            <div class="result-value" id="resSuccessful">—</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Time</div>
+                            <div class="result-value" id="resTime">—</div>
+                        </div>
+                        <div class="result-item" style="grid-column: 1 / -1;">
+                            <div class="result-label">Final URL</div>
+                            <div class="result-value url" id="resUrl">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== CONSOLE PANEL ==================== -->
+            <div class="card console-panel">
+                <div class="card-header console-header">
+                    <span class="card-title">🖥️ Live Console</span>
+                    <div class="console-actions">
+                        <button class="console-action-btn" onclick="clearConsole()">Clear</button>
+                        <button class="console-action-btn" id="autoScrollBtn" onclick="toggleAutoScroll()">Auto-scroll: ON</button>
+                    </div>
+                </div>
+                <div class="console" id="console">
+                    <div class="log-line info">Waiting for connection...</div>
+                </div>
+                <div class="running-dots" id="runningDots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ==================== STATE ====================
+        const socket = io();
+        let sessionActive = false;
+        let goalRunning = false;
+        let autoScroll = true;
+        let goalHistory = [];
+        let isRecording = false;
+        let recognition = null;
+        let voiceMode = false;
+
+        // ==================== DOM REFERENCES ====================
+        const $ = id => document.getElementById(id);
+        const statusBadge = $('statusBadge');
+        const statusText = $('statusText');
+        const btnStart = $('btnStart');
+        const btnStop = $('btnStop');
+        const goalSection = $('goalSection');
+        const goalInput = $('goalInput');
+        const goalSendBtn = $('goalSendBtn');
+        const goalMicBtn = $('goalMicBtn');
+        const consoleEl = $('console');
+        const runningDots = $('runningDots');
+        const sessionIndicator = $('sessionIndicator');
+        const historySection = $('historySection');
+        const historyList = $('historyList');
+        const voiceIndicator = $('voiceIndicator');
+        const voiceStatusText = $('voiceStatusText');
+        const inputModeSelect = $('inputMode');
+
+        // ==================== SCROLL DEBOUNCING ====================
+        // Fix: batch scroll updates with rAF to avoid infinite scroll loops
+        let scrollPending = false;
+
+        function scheduleScroll() {
+            if (!scrollPending && autoScroll) {
+                scrollPending = true;
+                requestAnimationFrame(() => {
+                    consoleEl.scrollTop = consoleEl.scrollHeight;
+                    scrollPending = false;
+                });
+            }
+        }
+
+        // ==================== WEB SPEECH API (STT) ====================
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const speechSupported = !!SpeechRecognition;
+
+        // ==================== BROWSER TTS (Speech Synthesis) ====================
+        const ttsSupported = 'speechSynthesis' in window;
+        let ttsSpeaking = false;
+
+        function speak(text, onDone) {
+            if (!ttsSupported || !voiceMode) {
+                if (onDone) onDone();
+                return;
+            }
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.05;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            utterance.lang = 'en-US';
+
+            // Try to pick a good voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferred = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en'))
+                            || voices.find(v => v.lang.startsWith('en-US'))
+                            || voices.find(v => v.lang.startsWith('en'));
+            if (preferred) utterance.voice = preferred;
+
+            utterance.onstart = () => { ttsSpeaking = true; };
+            utterance.onend = () => { ttsSpeaking = false; if (onDone) onDone(); };
+            utterance.onerror = () => { ttsSpeaking = false; if (onDone) onDone(); };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function announce(text) {
+            speak(text);
+            appendLog(`[Voice] ${text}`, 'info');
+        }
+
+        // Preload voices (some browsers need this)
+        if (ttsSupported) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        }
+
+        // ==================== SPEECH RECOGNITION ====================
+        function initSpeechRecognition() {
+            if (!speechSupported) return;
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;       // Keep listening until user stops
+            recognition.interimResults = true;    // Show partial results while speaking
+            recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
+
+            let finalResult = '';
+
+            recognition.onstart = () => {
+                isRecording = true;
+                finalResult = '';
+                goalMicBtn.classList.add('recording');
+                goalMicBtn.innerHTML = '⏹';
+                voiceStatusText.textContent = '🔴 Listening... speak now (click ⏹ to stop)';
+                goalInput.placeholder = '🔴 Listening... speak your goal';
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                finalResult = '';
+
+                for (let i = 0; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalResult += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Show what we're hearing in real-time
+                goalInput.value = finalResult + interimTranscript;
+
+                if (finalResult) {
+                    voiceStatusText.textContent = `✓ Heard: "${finalResult.substring(0, 50)}${finalResult.length > 50 ? '...' : ''}" — click ⏹ to stop`;
+                } else if (interimTranscript) {
+                    voiceStatusText.textContent = '🔴 Listening... keep speaking';
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+
+                // Don't stop for 'no-speech' errors in continuous mode, just keep going
+                if (event.error === 'no-speech') {
+                    voiceStatusText.textContent = '🔴 No speech heard yet... keep speaking';
+                    return;
+                }
+
+                // For 'aborted' errors (user stopped), don't show error
+                if (event.error === 'aborted') return;
+
+                isRecording = false;
+                goalMicBtn.classList.remove('recording');
+                goalMicBtn.innerHTML = '🎤';
+                goalInput.placeholder = 'What should I do?';
+
+                if (event.error === 'not-allowed') {
+                    voiceStatusText.textContent = '⚠ Microphone access denied — check browser permissions';
+                    voiceIndicator.classList.add('voice-unsupported');
+                } else {
+                    voiceStatusText.textContent = `Voice error: ${event.error} — click 🎤 to retry`;
+                }
+            };
+
+            recognition.onend = () => {
+                const wasRecording = isRecording;
+                isRecording = false;
+                goalMicBtn.classList.remove('recording');
+                goalMicBtn.innerHTML = '🎤';
+                goalInput.placeholder = 'What should I do?';
+
+                if (goalInput.value.trim() && voiceMode) {
+                    voiceStatusText.textContent = '✓ Speech captured — press Enter or ➤ to execute, or 🎤 to re-record';
+                } else if (voiceMode) {
+                    voiceStatusText.textContent = 'Voice mode active — click 🎤 or press V to speak';
+                }
+            };
+        }
+
+        function toggleVoiceInput() {
+            if (!speechSupported) {
+                alert('Your browser does not support Speech Recognition. Please use Chrome, Edge, or Safari.');
+                return;
+            }
+
+            if (!recognition) initSpeechRecognition();
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                goalInput.value = '';
+                recognition.start();
+            }
+        }
+
+        // Handle input mode change
+        inputModeSelect.addEventListener('change', (e) => {
+            voiceMode = e.target.value === 'voice';
+            updateInputModeUI();
+        });
+
+        function updateInputModeUI() {
+            if (voiceMode) {
+                goalMicBtn.classList.remove('hidden');
+                voiceIndicator.classList.remove('hidden');
+
+                if (!speechSupported) {
+                    voiceStatusText.textContent = '⚠ Browser does not support Speech Recognition (use Chrome/Edge)';
+                    voiceIndicator.classList.add('voice-unsupported');
+                    goalMicBtn.disabled = true;
+                } else {
+                    voiceStatusText.textContent = 'Voice mode active — click 🎤 or press V to speak';
+                    voiceIndicator.classList.remove('voice-unsupported');
+                    goalMicBtn.disabled = false;
+                }
+            } else {
+                goalMicBtn.classList.add('hidden');
+                voiceIndicator.classList.add('hidden');
+                if (isRecording && recognition) {
+                    recognition.stop();
+                }
+            }
+        }
+
+        // V key shortcut to start voice
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'v' && voiceMode && sessionActive && !goalRunning
+                && document.activeElement !== goalInput) {
+                e.preventDefault();
+                toggleVoiceInput();
+            }
+        });
+
+        // ==================== SOCKET HANDLERS ====================
+        socket.on('connect', () => {
+            updateStatus('connected', 'Connected — ready to start');
+            appendLog('Connected to WebCane3 server', 'info');
+        });
+
+        socket.on('disconnect', () => {
+            updateStatus('disconnected', 'Disconnected');
+            appendLog('Connection lost', 'error');
+        });
+
+        socket.on('status', (data) => {
+            updateStatus(data.state, data.message);
+            // Reset Start button if error occurs during initialization
+            if (data.state === 'error' && !sessionActive) {
+                btnStart.disabled = false;
+                btnStart.innerHTML = '▶ Start Session';
+            }
+        });
+
+        socket.on('log', (data) => {
+            const msg = data.message;
+            let type = 'default';
+
+            // Color-code log lines
+            if (msg.includes('PHASE') || msg.includes('━━━') || msg.includes('===')) type = 'phase';
+            else if (msg.includes('SUCCESS') || msg.includes('COMPLETE') || msg.includes('Ready')) type = 'success';
+            else if (msg.includes('ERROR') || msg.includes('FAILED') || msg.includes('Error')) type = 'error';
+            else if (msg.startsWith('---') || msg.startsWith('===') || msg.startsWith('***')) type = 'separator';
+
+            appendLog(msg, type);
+        });
+
+        socket.on('session_started', (data) => {
+            if (data.success) {
+                sessionActive = true;
+                btnStart.classList.add('hidden');
+                btnStop.classList.remove('hidden');
+                goalSection.classList.remove('hidden');
+                sessionIndicator.className = 'session-indicator';
+                sessionIndicator.textContent = '● Active';
+                $('modelSelect').disabled = true;
+                $('execMode').disabled = true;
+                $('inputMode').disabled = true;
+                goalInput.focus();
+                updateInputModeUI();
+                // Voice announcement
+                announce('WebCane3 ready. What would you like me to do?');
+            } else {
+                btnStart.disabled = false;
+                btnStart.innerHTML = '▶ Start Session';
+            }
+        });
+
+        socket.on('session_stopped', (data) => {
+            sessionActive = false;
+            goalRunning = false;
+            btnStart.classList.remove('hidden');
+            btnStop.classList.add('hidden');
+            goalSection.classList.add('hidden');
+            sessionIndicator.className = 'session-indicator inactive';
+            sessionIndicator.textContent = 'No Session';
+            $('modelSelect').disabled = false;
+            $('execMode').disabled = false;
+            $('inputMode').disabled = false;
+            setRunningState(false);
+            if (isRecording && recognition) recognition.stop();
+        });
+
+        socket.on('goal_result', (data) => {
+            goalRunning = false;
+            setRunningState(false);
+            goalInput.disabled = false;
+            goalSendBtn.disabled = false;
+            if (voiceMode) goalMicBtn.disabled = false;
+
+            // Show results
+            $('resultEmpty').classList.add('hidden');
+            $('resultsGrid').classList.remove('hidden');
+
+            const statusEl = $('resStatus');
+            if (data.success) {
+                statusEl.textContent = '✓ Success';
+                statusEl.className = 'result-value success';
+            } else {
+                statusEl.textContent = '✗ Failed';
+                statusEl.className = 'result-value error';
+            }
+
+            $('resActions').textContent = data.actions_taken ?? '—';
+            $('resSuccessful').textContent = data.successful_actions ?? '—';
+            $('resTime').textContent = data.elapsed_time ? data.elapsed_time + 's' : '—';
+            $('resUrl').textContent = data.final_url || 'N/A';
+
+            // Add to history
+            const goalText = goalInput.dataset.lastGoal || 'Unknown goal';
+            addToHistory(goalText, data.success);
+
+            // Voice feedback for result (like terminal VoiceInterface)
+            if (data.success) {
+                announce(`Goal completed successfully in ${data.elapsed_time || 0} seconds with ${data.actions_taken || 0} actions. Do you have another action to do?`);
+            } else {
+                const errorMsg = data.error ? data.error.substring(0, 80) : 'unknown error';
+                announce(`Goal failed. ${errorMsg}. Do you want to try something else?`);
+            }
+        });
+
+        // ==================== ACTIONS ====================
+        function startSession() {
+            const model = $('modelSelect').value;
+            const vlmOnly = $('execMode').value === 'vlm';
+            voiceMode = $('inputMode').value === 'voice';
+
+            btnStart.disabled = true;
+            btnStart.innerHTML = '<span class="running-dots visible" style="display:inline-flex;gap:4px;"><span></span><span></span><span></span></span> Starting...';
+
+            socket.emit('start_session', { model, vlm_only: vlmOnly });
+        }
+
+        function stopSession() {
+            btnStop.disabled = true;
+            socket.emit('stop_session');
+            setTimeout(() => { btnStop.disabled = false; }, 3000);
+        }
+
+        function executeGoal() {
+            const goal = goalInput.value.trim();
+            if (!goal || goalRunning) return;
+
+            // Stop any ongoing recording
+            if (isRecording && recognition) recognition.stop();
+            // Stop any ongoing TTS
+            if (ttsSupported) window.speechSynthesis.cancel();
+
+            goalRunning = true;
+            goalInput.dataset.lastGoal = goal;
+            goalInput.disabled = true;
+            goalSendBtn.disabled = true;
+            if (voiceMode) goalMicBtn.disabled = true;
+            setRunningState(true);
+
+            // Announce the goal
+            announce(`Working on: ${goal.substring(0, 80)}`);
+
+            socket.emit('execute_goal', { goal });
+            goalInput.value = '';
+        }
+
+        function handleGoalKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                executeGoal();
+            }
+        }
+
+        // ==================== UI HELPERS ====================
+        function updateStatus(state, message) {
+            statusBadge.dataset.state = state;
+            statusText.textContent = message;
+        }
+
+        function appendLog(message, type = 'default') {
+            const line = document.createElement('div');
+            line.className = 'log-line' + (type !== 'default' ? ' ' + type : '');
+            line.textContent = message;
+            consoleEl.appendChild(line);
+
+            // Limit lines
+            while (consoleEl.children.length > 1000) {
+                consoleEl.removeChild(consoleEl.firstChild);
+            }
+
+            // Debounced scroll via rAF — prevents infinite smooth-scroll loop
+            scheduleScroll();
+        }
+
+        function clearConsole() {
+            consoleEl.innerHTML = '';
+            appendLog('Console cleared', 'info');
+        }
+
+        function toggleAutoScroll() {
+            autoScroll = !autoScroll;
+            $('autoScrollBtn').textContent = 'Auto-scroll: ' + (autoScroll ? 'ON' : 'OFF');
+        }
+
+        function setRunningState(running) {
+            runningDots.className = running ? 'running-dots visible' : 'running-dots';
+        }
+
+        function addToHistory(goal, success) {
+            goalHistory.unshift({ goal, success, time: new Date().toLocaleTimeString() });
+            if (goalHistory.length > 10) goalHistory.pop();
+
+            historySection.classList.remove('hidden');
+            historyList.innerHTML = goalHistory.map(h => `
+                <div class="info-card" style="margin-bottom:6px;">
+                    <span class="info-icon">${h.success ? '✅' : '❌'}</span>
+                    <span class="info-text" style="flex:1;">
+                        <strong>${escapeHtml(h.goal.substring(0, 60))}${h.goal.length > 60 ? '...' : ''}</strong>
+                        <br><span style="color:var(--text-muted);font-size:11px;">${h.time}</span>
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==================== INIT ====================
+        if (speechSupported) {
+            initSpeechRecognition();
+        }
+    </script>
+</body>
+</html>
