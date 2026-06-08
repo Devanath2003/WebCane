@@ -699,7 +699,7 @@ class Executor:
             response = self.dom_client.chat.completions.create(
                 model=self.dom_model,
                 messages=[{"role": "user", "content": prompt}],
-                max_completion_tokens=100,  # Well under 8000 TPM limit
+                max_completion_tokens=100,  
                 temperature=0.1
             )
 
@@ -789,7 +789,7 @@ class Executor:
             print(result[:300] if len(result) > 300 else result)
             print("-" * 50)
 
-            self.last_vision_reasoning = result[:200]  # Store first 200 chars
+            self.last_vision_reasoning = result[:200]
 
             answer_match = re.search(r'ANSWER:\s*(-?\d+)', result, re.IGNORECASE)
             if answer_match:
