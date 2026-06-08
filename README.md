@@ -1,6 +1,5 @@
 # WebCane 3.0
 
-![Architecture Diagram](assets/architecture.png)
 
 WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a **ReAct (Reason + Act)** architecture powered by LangGraph. Designed for robust, intelligent web interaction, it combines the reasoning capabilities of state-of-the-art LLMs with hybrid DOM and Vision-based execution.
 
@@ -15,6 +14,9 @@ WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a 
 - **Voice-First Accessibility:** Built-in Speech-to-Text (Groq Whisper) and Text-to-Speech (NVIDIA Riva) to enable completely hands-free web navigation.
 
 ## 🏗️ Architecture
+
+<img width="1134" height="613" alt="image" src="https://github.com/user-attachments/assets/a73d75cb-5320-49f7-8cb8-324f9c69708f" />
+
 
 1. **Router:** Intelligently extracts the target starting URL from the user's natural language goal.
 2. **Observer:** Captures screenshots and DOM state, utilizing Gemma 4 31B to generate a comprehensive, structured description of the page context.
