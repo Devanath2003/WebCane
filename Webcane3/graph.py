@@ -13,7 +13,7 @@ from .browser_controller import BrowserController
 from .observer import Observer
 from .planner import Planner
 from .executor import Executor
-from .verifier import Verifier
+from .verifier import Verifierx
 from .config import Config
 
 
