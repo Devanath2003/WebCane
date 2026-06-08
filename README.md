@@ -3,7 +3,7 @@
 
 WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a **ReAct (Reason + Act)** architecture powered by LangGraph. Designed for robust, intelligent web interaction, it combines the reasoning capabilities of state-of-the-art LLMs with hybrid DOM and Vision-based execution.
 
-## 🌟 Key Features
+##  Key Features
 
 - **ReAct Architecture:** An intelligent loop that continuously observes the web page, reasons about the goal, and executes atomic actions.
 - **Hybrid Execution Engine:** 
@@ -13,7 +13,7 @@ WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a 
 - **Dynamic Supervisor:** Driven by NVIDIA DeepSeek-V4 Pro or Groq GPT-OSS, it intelligently decides the next best action, handles blockers (popups/captchas), and evaluates task completion.
 - **Voice-First Accessibility:** Built-in Speech-to-Text (Groq Whisper) and Text-to-Speech (NVIDIA Riva) to enable completely hands-free web navigation.
 
-## 🏗️ Architecture
+##  Architecture
 
 <img width="1134" height="613" alt="image" src="https://github.com/user-attachments/assets/a73d75cb-5320-49f7-8cb8-324f9c69708f" />
 
@@ -23,7 +23,7 @@ WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a 
 3. **Supervisor:** Analyzes the observer's output, recent execution history, and blockers to output a precise JSON action command.
 4. **Executor:** Translates supervisor commands into Playwright actions via a resilient, multi-tiered approach (Direct DOM -> Smart DOM Match -> SoM Vision -> Qwen2-VL).
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Python 3.10+
@@ -46,7 +46,7 @@ python run.py
 ```
 Upon execution, you can select between the **DeepSeek-V4 Pro** or **GPT-OSS-120B** supervisor models, choose Voice or Text mode, and opt to run in a strict VLM-only mode.
 
-## 🛠️ Project Structure
+##  Project Structure
 - `Webcane3/main.py`: The core LangGraph ReAct implementation.
 - `Webcane3/supervisor.py`: The reasoning engine that determines the next action.
 - `Webcane3/observer.py`: The vision-based state analyzer.
