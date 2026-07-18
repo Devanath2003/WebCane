@@ -1,7 +1,7 @@
-# WebCane 3.0
+# WebCane
 
 
-WebCane 3.0 is a cutting-edge, agentic web automation framework that utilizes a **ReAct (Reason + Act)** architecture powered by LangGraph. Designed for robust, intelligent web interaction, it combines the reasoning capabilities of state-of-the-art LLMs with hybrid DOM and Vision-based execution.
+WebCane is a cutting-edge, agentic web automation framework that utilizes a **ReAct (Reason + Act)** architecture powered by LangGraph. Designed for robust, intelligent web interaction, it combines the reasoning capabilities of state-of-the-art LLMs with hybrid DOM and Vision-based execution.
 
 ##  Key Features
 
